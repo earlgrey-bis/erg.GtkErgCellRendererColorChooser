@@ -9,18 +9,22 @@
 		<Build>
 			<Target title="D">
 				<Option output="bin/D/ErgCellRendererColorChooser" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/D/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="R">
 				<Option output="bin/R/ErgCellRendererColorChooser" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/R/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
+				<Option createDefFile="1" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -31,12 +35,18 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c11" />
+			<Add option="`pkg-config --cflags gtk+-3.0`" />
+			<Add directory="/usr/local/gwr/gtk/v-3.24.5" />
 		</Compiler>
-		<Unit filename="src/ErgCellRendererColorChooser.c">
+		<Linker>
+			<Add option="`pkg-config --libs gtk+-3.0`" />
+		</Linker>
+		<Unit filename="src/GtkErgCellRendererColorChooser.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="src/" />
 		</Unit>
-		<Unit filename="src/ErgCellRendererColorChooser.h">
+		<Unit filename="src/GtkErgCellRendererColorChooser.h">
 			<Option virtualFolder="src/" />
 		</Unit>
 		<Extensions>
