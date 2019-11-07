@@ -1,0 +1,125 @@
+static void
+gtk_erg_cell_renderer_color_chooser_set_property (GObject      *object,
+				     guint         param_id,
+				     const GValue *value,
+				     GParamSpec   *pspec)
+{
+  GtkErgCellRendererColorChooser *celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (object);
+  GtkErgCellRendererColorChooserPrivate *priv = celltext->priv;
+
+  switch (param_id)
+    {
+    case PROP_TEXT:
+      g_free (priv->text);
+
+      if (priv->markup_set)
+        {
+          if (priv->extra_attrs)
+            pango_attr_list_unref (priv->extra_attrs);
+          priv->extra_attrs = NULL;
+          priv->markup_set = FALSE;
+        }
+
+      priv->text = g_value_dup_string (value);
+      g_object_notify_by_pspec (object, pspec);
+      break;
+
+
+    case PROP_BACKGROUND:
+      {
+        GdkRGBA rgba;
+
+        if (!g_value_get_string (value))
+          set_bg_color (celltext, NULL);       /* reset to background_set to FALSE */
+        else if (gdk_rgba_parse (&rgba, g_value_get_string (value)))
+          set_bg_color (celltext, &rgba);
+        else
+          g_warning ("Don't know color '%s'", g_value_get_string (value));
+
+        g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_BACKGROUND_GDK]);
+      }
+      break;
+
+    case PROP_FOREGROUND:
+      {
+        GdkRGBA rgba;
+
+        if (!g_value_get_string (value))
+          set_fg_color (celltext, NULL);       /* reset to foreground_set to FALSE */
+        else if (gdk_rgba_parse (&rgba, g_value_get_string (value)))
+          set_fg_color (celltext, &rgba);
+        else
+          g_warning ("Don't know color '%s'", g_value_get_string (value));
+
+        g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_FOREGROUND_GDK]);
+      }
+      break;
+
+    case PROP_BACKGROUND_GDK:
+      {
+        GdkColor *color;
+
+        color = g_value_get_boxed (value);
+        if (color)
+          {
+            GdkRGBA rgba;
+
+            rgba.red = color->red / 65535.;
+            rgba.green = color->green / 65535.;
+            rgba.blue = color->blue / 65535.;
+            rgba.alpha = 1;
+
+            set_bg_color (celltext, &rgba);
+          }
+        else
+          {
+            set_bg_color (celltext, NULL);
+          }
+      }
+      break;
+
+    case PROP_FOREGROUND_GDK:
+      {
+        GdkColor *color;
+
+        color = g_value_get_boxed (value);
+        if (color)
+          {
+            GdkRGBA rgba;
+
+            rgba.red = color->red / 65535.;
+            rgba.green = color->green / 65535.;
+            rgba.blue = color->blue / 65535.;
+            rgba.alpha = 1;
+
+            set_fg_color (celltext, &rgba);
+          }
+        else
+          {
+            set_fg_color (celltext, NULL);
+          }
+      }
+      break;
+
+    case PROP_BACKGROUND_RGBA:
+      set_bg_color (celltext, g_value_get_boxed (value));
+      break;
+
+    case PROP_FOREGROUND_RGBA:
+      set_fg_color (celltext, g_value_get_boxed (value));
+      break;
+
+    case PROP_BACKGROUND_SET:
+      priv->background_set = g_value_get_boolean (value);
+      break;
+
+    case PROP_FOREGROUND_SET:
+      priv->foreground_set = g_value_get_boolean (value);
+      break;
+
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      break;
+    }
+}

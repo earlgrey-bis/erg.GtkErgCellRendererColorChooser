@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="D" />
+	<File name="src/GtkErgCellRendererColorChooser.c" open="1" top="1" tabpos="30" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2284" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+			<Collapse line="35" />
+			<Collapse line="111" />
+			<Collapse line="116" />
+			<Collapse line="231" />
+			<Collapse line="257" />
+			<Collapse line="277" />
+			<Collapse line="292" />
+			<Collapse line="311" />
+			<Collapse line="315" />
+			<Collapse line="317" />
+			<Collapse line="325" />
+			<Collapse line="327" />
+			<Collapse line="337" />
+			<Collapse line="341" />
+			<Collapse line="343" />
+			<Collapse line="351" />
+			<Collapse line="353" />
+			<Collapse line="362" />
+			<Collapse line="377" />
+			<Collapse line="394" />
+			<Collapse line="436" />
+			<Collapse line="450" />
+			<Collapse line="456" />
+			<Collapse line="462" />
+			<Collapse line="621" />
+			<Collapse line="637" />
+			<Collapse line="648" />
+			<Collapse line="655" />
+			<Collapse line="666" />
+			<Collapse line="678" />
+			<Collapse line="735" />
+			<Collapse line="755" />
+			<Collapse line="785" />
+			<Collapse line="790" />
+		</Folding>
+	</File>
+	<File name="src/crcc-class-init.ci" open="1" top="0" tabpos="28" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5101" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/crcc-set.ci" open="1" top="0" tabpos="27" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="726" topLine="3" />
+		</Cursor>
+		<Folding>
+			<Collapse line="28" />
+			<Collapse line="43" />
+			<Collapse line="58" />
+			<Collapse line="63" />
+			<Collapse line="74" />
+			<Collapse line="81" />
+			<Collapse line="86" />
+			<Collapse line="97" />
+		</Folding>
+	</File>
+	<File name="src/GtkErgCellRendererColorChooser.h" open="1" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2823" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="src/crcc-get.ci" open="1" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="373" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="36" />
+		</Folding>
+	</File>
+</CodeBlocks_layout_file>

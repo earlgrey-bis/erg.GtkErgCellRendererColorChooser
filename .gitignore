@@ -3,4 +3,6 @@ obj
 *.~
 *.[oa]
 tests
+src/bkp
+
 

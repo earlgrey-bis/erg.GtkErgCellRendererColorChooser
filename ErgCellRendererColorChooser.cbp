@@ -49,6 +49,15 @@
 		<Unit filename="src/GtkErgCellRendererColorChooser.h">
 			<Option virtualFolder="src/" />
 		</Unit>
+		<Unit filename="src/crcc-class-init.ci">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/crcc-get.ci">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/crcc-set.ci">
+			<Option virtualFolder="src/" />
+		</Unit>
 		<Extensions>
 			<envvars />
 			<code_completion />
