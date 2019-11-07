@@ -64,15 +64,13 @@ struct _GtkErgCellRendererColorChooserClass
   void (*_gtk_reserved4) (void);
 };
 
-GDK_AVAILABLE_IN_ALL
-GType            gtk_erg_cell_renderer_color_chooser_get_type (void) G_GNUC_CONST;
+GDK_AVAILABLE_IN_ALL    GType               gtk_erg_cell_renderer_color_chooser_get_type                    (void) G_GNUC_CONST;
 
-GDK_AVAILABLE_IN_ALL
-GtkCellRenderer *gtk_erg_cell_renderer_color_chooser_new      (void);
+GDK_AVAILABLE_IN_ALL    GtkCellRenderer *   gtk_erg_cell_renderer_color_chooser_new                         (void);
 
-GDK_AVAILABLE_IN_ALL
-void             gtk_erg_cell_renderer_color_chooser_set_fixed_height_from_font (GtkErgCellRendererColorChooser *renderer,
-								    gint                 number_of_rows);
+GDK_AVAILABLE_IN_ALL    void                gtk_erg_cell_renderer_color_chooser_set_fixed_height_from_font  (
+                                                GtkErgCellRendererColorChooser  *   renderer        ,
+                                                gint                                number_of_rows  );
 
 
 G_END_DECLS

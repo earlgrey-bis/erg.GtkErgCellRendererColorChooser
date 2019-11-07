@@ -1,4 +1,69 @@
 static void
+gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *celltext)
+{
+  GtkErgCellRendererColorChooserPrivate *priv;
+  GtkCellRenderer *cell = GTK_CELL_RENDERER (celltext);
+
+  celltext->priv = gtk_erg_cell_renderer_color_chooser_get_instance_private (celltext);
+  priv = celltext->priv;
+
+  gtk_cell_renderer_set_alignment (cell, 0.0, 0.5);
+  gtk_cell_renderer_set_padding (cell, 2, 2);
+  priv->font_scale = 1.0;
+  priv->fixed_height_rows = -1;
+  priv->font = pango_font_description_new ();
+
+  priv->width_chars = -1;
+  priv->max_width_chars = -1;
+  priv->wrap_width = -1;
+  priv->wrap_mode = PANGO_WRAP_CHAR;
+  priv->align = PANGO_ALIGN_LEFT;
+  priv->align_set = FALSE;
+}
+
+static void
+gtk_erg_cell_renderer_color_chooser_finalize (GObject *object)
+{
+  GtkErgCellRendererColorChooser *celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (object);
+  GtkErgCellRendererColorChooserPrivate *priv = celltext->priv;
+
+  pango_font_description_free (priv->font);
+
+  g_free (priv->text);
+  g_free (priv->placeholder_text);
+
+  if (priv->extra_attrs)
+    pango_attr_list_unref (priv->extra_attrs);
+
+  if (priv->language)
+    g_object_unref (priv->language);
+
+  g_clear_object (&priv->entry);
+
+  G_OBJECT_CLASS (gtk_erg_cell_renderer_color_chooser_parent_class)->finalize (object);
+}
+
+/**
+ * gtk_erg_cell_renderer_color_chooser_new:
+ *
+ * Creates a new #GtkErgCellRendererColorChooser. Adjust how text is drawn using
+ * object properties. Object properties can be
+ * set globally (with g_object_set()). Also, with #GtkTreeViewColumn,
+ * you can bind a property to a value in a #GtkTreeModel. For example,
+ * you can bind the “text” property on the cell renderer to a string
+ * value in the model, thus rendering a different string in each row
+ * of the #GtkTreeView
+ *
+ * Returns: the new cell renderer
+ **/
+GtkCellRenderer *
+gtk_erg_cell_renderer_color_chooser_new (void)
+{
+    printf("(crcc)new\n");
+  return g_object_new (GTK_TYPE_ERG_CELL_RENDERER_COLOR_CHOOSER, NULL);
+}
+
+static void
 gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserClass *class)
 {
     GObjectClass          * object_class    = G_OBJECT_CLASS (class);
@@ -376,9 +441,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
                 P_("Foreground set"),
                 P_("Whether this tag affects the foreground color"));
 
-  //ADD_SET_PROP ("editable-set", PROP_EDITABLE_SET,
-  //              P_("Editability set"),
-  //              P_("Whether this tag affects text editability"));
+  ADD_SET_PROP ("editable-set", PROP_EDITABLE_SET,
+                P_("Editability set"),
+                P_("Whether this tag affects text editability"));
 
   //ADD_SET_PROP ("family-set", PROP_FAMILY_SET,
   //              P_("Font family set"),

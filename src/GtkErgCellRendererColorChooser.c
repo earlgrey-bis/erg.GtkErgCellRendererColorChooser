@@ -47,6 +47,9 @@
  */
 
 
+//  ************************************************************************************************
+//  Declarations
+//  ************************************************************************************************
 static void gtk_erg_cell_renderer_color_chooser_finalize   (GObject                  *object);
 
 static void gtk_erg_cell_renderer_color_chooser_get_property  (GObject                  *object,
@@ -106,9 +109,9 @@ static          void     set_fg_color (
 
 static inline   gboolean  show_placeholder_text(
                             GtkErgCellRendererColorChooser  *   celltext    );
-
-
-
+//  ************************************************************************************************
+//  Structs etc...
+//  ************************************************************************************************
 enum {
   EDITED,
   LAST_SIGNAL
@@ -162,7 +165,7 @@ enum {
   //PROP_STRETCH_SET,
   //PROP_SIZE_SET,
   //PROP_SCALE_SET,
-  //PROP_EDITABLE_SET,
+  PROP_EDITABLE_SET,
   //PROP_STRIKETHROUGH_SET,
   //PROP_UNDERLINE_SET,
   //PROP_RISE_SET,
@@ -173,8 +176,8 @@ enum {
   LAST_PROP
 };
 
-static guint text_cell_renderer_signals [LAST_SIGNAL];
-static GParamSpec *text_cell_renderer_props [LAST_PROP];
+static guint            text_cell_renderer_signals  [LAST_SIGNAL];
+static GParamSpec   *   text_cell_renderer_props    [LAST_PROP];
 
 #define GTK_ERG_CELL_RENDERER_COLOR_CHOOSER_PATH "gtk-erg-cell-renderer-color-chooser"
 
@@ -226,74 +229,10 @@ struct _GtkErgCellRendererColorChooserPrivate
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GtkErgCellRendererColorChooser, gtk_erg_cell_renderer_color_chooser, GTK_TYPE_CELL_RENDERER)
-
-static void
-gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *celltext)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-  GtkCellRenderer *cell = GTK_CELL_RENDERER (celltext);
-
-  celltext->priv = gtk_erg_cell_renderer_color_chooser_get_instance_private (celltext);
-  priv = celltext->priv;
-
-  gtk_cell_renderer_set_alignment (cell, 0.0, 0.5);
-  gtk_cell_renderer_set_padding (cell, 2, 2);
-  priv->font_scale = 1.0;
-  priv->fixed_height_rows = -1;
-  priv->font = pango_font_description_new ();
-
-  priv->width_chars = -1;
-  priv->max_width_chars = -1;
-  priv->wrap_width = -1;
-  priv->wrap_mode = PANGO_WRAP_CHAR;
-  priv->align = PANGO_ALIGN_LEFT;
-  priv->align_set = FALSE;
-}
-
-//  static void gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserClass *class)
-#include    "crcc-class-init.ci"
-
-static void
-gtk_erg_cell_renderer_color_chooser_finalize (GObject *object)
-{
-  GtkErgCellRendererColorChooser *celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (object);
-  GtkErgCellRendererColorChooserPrivate *priv = celltext->priv;
-
-  pango_font_description_free (priv->font);
-
-  g_free (priv->text);
-  g_free (priv->placeholder_text);
-
-  if (priv->extra_attrs)
-    pango_attr_list_unref (priv->extra_attrs);
-
-  if (priv->language)
-    g_object_unref (priv->language);
-
-  g_clear_object (&priv->entry);
-
-  G_OBJECT_CLASS (gtk_erg_cell_renderer_color_chooser_parent_class)->finalize (object);
-}
-
-/**
- * gtk_erg_cell_renderer_color_chooser_new:
- *
- * Creates a new #GtkErgCellRendererColorChooser. Adjust how text is drawn using
- * object properties. Object properties can be
- * set globally (with g_object_set()). Also, with #GtkTreeViewColumn,
- * you can bind a property to a value in a #GtkTreeModel. For example,
- * you can bind the “text” property on the cell renderer to a string
- * value in the model, thus rendering a different string in each row
- * of the #GtkTreeView
- *
- * Returns: the new cell renderer
- **/
-GtkCellRenderer *
-gtk_erg_cell_renderer_color_chooser_new (void)
-{
-    printf("(crcc)new\n");
-  return g_object_new (GTK_TYPE_ERG_CELL_RENDERER_COLOR_CHOOSER, NULL);
-}
+//  ************************************************************************************************
+//  Gtk boilerplate
+//  ************************************************************************************************
+#include    "crcc-bpl.ci"
 //  ************************************************************************************************
 //  GET / SET
 //  ************************************************************************************************
@@ -304,7 +243,7 @@ gtk_erg_cell_renderer_color_chooser_new (void)
 //  ************************************************************************************************
 #include    "crcc-fonts.ci"
 //  ************************************************************************************************
-//  FONTS
+//  ...
 //  ************************************************************************************************
 static void
 set_bg_color (GtkErgCellRendererColorChooser *celltext,
@@ -400,8 +339,8 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
         color.alpha =   1.0;
 
       gdk_cairo_rectangle (cr, background_area);
-      //gdk_cairo_set_source_rgba (cr, &priv->background);
-      gdk_cairo_set_source_rgba (cr, &color);
+      gdk_cairo_set_source_rgba (cr, &priv->background);
+      //gdk_cairo_set_source_rgba (cr, &color);
       cairo_fill (cr);
     }
 
@@ -430,195 +369,13 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
 
   g_object_unref (layout);
 }
-
-static void
-gtk_erg_cell_renderer_color_chooser_editing_done (GtkCellEditable *entry,
-				     gpointer         data)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-  const gchar *path;
-  const gchar *new_text;
-  gboolean canceled;
-
-    printf("(crcc)editing done\n");
-
-
-  priv = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (data)->priv;
-
-  g_clear_object (&priv->entry);
-
-  if (priv->focus_out_id > 0)
-    {
-      g_signal_handler_disconnect (entry, priv->focus_out_id);
-      priv->focus_out_id = 0;
-    }
-
-  if (priv->populate_popup_id > 0)
-    {
-      g_signal_handler_disconnect (entry, priv->populate_popup_id);
-      priv->populate_popup_id = 0;
-    }
-
-  if (priv->entry_menu_popdown_timeout)
-    {
-      g_source_remove (priv->entry_menu_popdown_timeout);
-      priv->entry_menu_popdown_timeout = 0;
-    }
-
-  g_object_get (entry,
-                "editing-canceled", &canceled,
-                NULL);
-  gtk_cell_renderer_stop_editing (GTK_CELL_RENDERER (data), canceled);
-
-  if (canceled)
-    return;
-
-  path = g_object_get_data (G_OBJECT (entry), GTK_ERG_CELL_RENDERER_COLOR_CHOOSER_PATH);
-  new_text = gtk_entry_get_text (GTK_ENTRY (entry));
-
-  g_signal_emit (data, text_cell_renderer_signals[EDITED], 0, path, new_text);
-}
-
-static gboolean
-popdown_timeout (gpointer data)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-
-  priv = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (data)->priv;
-
-  priv->entry_menu_popdown_timeout = 0;
-
-  if (!gtk_widget_has_focus (priv->entry))
-    gtk_erg_cell_renderer_color_chooser_editing_done (GTK_CELL_EDITABLE (priv->entry), data);
-
-  return FALSE;
-}
-
-static void
-gtk_erg_cell_renderer_color_chooser_popup_unmap (GtkMenu *menu,
-                                    gpointer data)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-
-  priv = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (data)->priv;
-
-  priv->in_entry_menu = FALSE;
-
-  if (priv->entry_menu_popdown_timeout)
-    return;
-
-  priv->entry_menu_popdown_timeout = gdk_threads_add_timeout (500, popdown_timeout,
-                                                    data);
-  g_source_set_name_by_id (priv->entry_menu_popdown_timeout, "[gtk+] popdown_timeout");
-}
-
-static void
-gtk_erg_cell_renderer_color_chooser_populate_popup (GtkEntry *entry,
-                                       GtkMenu  *menu,
-                                       gpointer  data)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-
-  priv = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (data)->priv;
-
-  if (priv->entry_menu_popdown_timeout)
-    {
-      g_source_remove (priv->entry_menu_popdown_timeout);
-      priv->entry_menu_popdown_timeout = 0;
-    }
-
-  priv->in_entry_menu = TRUE;
-
-  g_signal_connect (menu, "unmap",
-                    G_CALLBACK (gtk_erg_cell_renderer_color_chooser_popup_unmap), data);
-}
-
-static gboolean
-gtk_erg_cell_renderer_color_chooser_focus_out_event (GtkWidget *entry,
-		                        GdkEvent  *event,
-					gpointer   data)
-{
-  GtkErgCellRendererColorChooserPrivate *priv;
-
-    printf("(crcc)focus out\n");
-
-
-  priv = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (data)->priv;
-
-  if (priv->in_entry_menu)
-    return FALSE;
-
-  g_object_set (entry,
-                "editing-canceled", TRUE,
-                NULL);
-  gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (entry));
-  gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (entry));
-
-  /* entry needs focus-out-event */
-  return FALSE;
-}
-
-static GtkCellEditable *
-gtk_erg_cell_renderer_color_chooser_start_editing (GtkCellRenderer      *cell,
-				      GdkEvent             *event,
-				      GtkWidget            *widget,
-				      const gchar          *path,
-				      const GdkRectangle   *background_area,
-				      const GdkRectangle   *cell_area,
-				      GtkCellRendererState  flags)
-{
-  GtkErgCellRendererColorChooser *celltext;
-  GtkErgCellRendererColorChooserPrivate *priv;
-  gfloat xalign, yalign;
-
-    printf("(crcc)start editing\n");
-
-  celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
-  priv = celltext->priv;
-
-  /* If the cell isn't editable we return NULL. */
-  if (priv->editable == FALSE)
-    return NULL;
-
-  gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
-
-  priv->entry = gtk_entry_new ();
-  g_object_ref_sink (G_OBJECT (priv->entry));
-
-  gtk_entry_set_has_frame (GTK_ENTRY (priv->entry), FALSE);
-  gtk_entry_set_alignment (GTK_ENTRY (priv->entry), xalign);
-  gtk_entry_set_width_chars (GTK_ENTRY (priv->entry), 5);
-
-  if (priv->text)
-    gtk_entry_set_text (GTK_ENTRY (priv->entry), priv->text);
-  g_object_set_data_full (G_OBJECT (priv->entry), I_(GTK_ERG_CELL_RENDERER_COLOR_CHOOSER_PATH), g_strdup (path), g_free);
-
-  gtk_editable_select_region (GTK_EDITABLE (priv->entry), 0, -1);
-
-  priv->in_entry_menu = FALSE;
-  if (priv->entry_menu_popdown_timeout)
-    {
-      g_source_remove (priv->entry_menu_popdown_timeout);
-      priv->entry_menu_popdown_timeout = 0;
-    }
-
-  g_signal_connect (priv->entry,
-		    "editing-done",
-		    G_CALLBACK (gtk_erg_cell_renderer_color_chooser_editing_done),
-		    celltext);
-  priv->focus_out_id = g_signal_connect_after (priv->entry, "focus-out-event",
-					       G_CALLBACK (gtk_erg_cell_renderer_color_chooser_focus_out_event),
-					       celltext);
-  priv->populate_popup_id =
-    g_signal_connect (priv->entry, "populate-popup",
-                      G_CALLBACK (gtk_erg_cell_renderer_color_chooser_populate_popup),
-                      celltext);
-
-  gtk_widget_show (priv->entry);
-
-  return GTK_CELL_EDITABLE (priv->entry);
-}
-
+//  ************************************************************************************************
+//  EDITING
+//  ************************************************************************************************
+#include    "crcc-edit.ci"
+//  ************************************************************************************************
+//  Width Height etc...
+//  ************************************************************************************************
 /**
  * gtk_erg_cell_renderer_color_chooser_set_fixed_height_from_font:
  * @renderer: A #GtkErgCellRendererColorChooser
