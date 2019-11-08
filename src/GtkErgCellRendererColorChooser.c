@@ -32,6 +32,45 @@
 //#include <gtk/a11y/gtktextcellaccessible.h>
 #include <gtk/gtk-a11y.h>
 
+#define g_marshal_value_peek_string(v)  (v)->data[0].v_pointer
+
+void
+__marshal_VOID__STRING_STRING(
+    GClosure     *closure,
+    GValue       *return_value G_GNUC_UNUSED,
+    guint         n_param_values,
+    const GValue *param_values,
+    gpointer      invocation_hint G_GNUC_UNUSED,
+    gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__STRING_STRING) (gpointer data1,
+                                                    gpointer arg1,
+                                                    gpointer arg2,
+                                                    gpointer data2);
+  GCClosure *cc = (GCClosure *) closure;
+  gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_STRING callback;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__STRING_STRING) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_string (param_values + 1),
+            g_marshal_value_peek_string (param_values + 2),
+            data2);
+}
+
 
 /**
  * SECTION:gtkcellrenderertext
@@ -687,7 +726,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GtkErgCellRendererColorChooserClass, edited),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__STRING,//_gtk_marshal_VOID__STRING_STRING,
+		  __marshal_VOID__STRING_STRING,//g_cclosure_marshal_VOID__STRING,//_gtk_marshal_VOID__STRING_STRING,
 		  G_TYPE_NONE, 2,
 		  G_TYPE_STRING,
 		  G_TYPE_STRING);
@@ -1123,6 +1162,7 @@ gtk_erg_cell_renderer_color_chooser_set_property (GObject      *object,
   switch (param_id)
     {
     case PROP_TEXT:
+        printf("set text\n");
       g_free (priv->text);
 
       if (priv->markup_set)
@@ -1527,7 +1567,7 @@ gtk_erg_cell_renderer_color_chooser_set_property (GObject      *object,
 GtkCellRenderer *
 gtk_erg_cell_renderer_color_chooser_new (void)
 {
-  return g_object_new (GTK_TYPE_CELL_RENDERER_TEXT, NULL);
+  return g_object_new (GTK_TYPE_ERG_CELL_RENDERER_COLOR_CHOOSER, NULL);
 }
 
 static inline gboolean
