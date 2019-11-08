@@ -226,10 +226,10 @@ gtk_erg_cell_renderer_color_chooser_activate(
 
     gtk_widget_destroy(dlg);
 
-    if ( r == GTK_RESPONSE_OK )
-    {
-        g_object_notify_by_pspec(G_OBJECT(crdr), text_cell_renderer_props[PROP_COLOR_RGBA]);
-    }
+    //if ( r == GTK_RESPONSE_OK )
+    //{
+    //    g_object_notify_by_pspec(G_OBJECT(crdr), text_cell_renderer_props[PROP_COLOR_RGBA_TEXT]);
+    //}
 
     return TRUE;                                                                                    // TRUE if the event was consumed/handled
 }

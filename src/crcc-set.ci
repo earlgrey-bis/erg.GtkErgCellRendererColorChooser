@@ -13,13 +13,13 @@ gtk_erg_cell_renderer_color_chooser_set_property (
 
     //  ............................................................................................
     case PROP_EDITABLE:
-    priv->a_editable        =   g_value_get_boolean (value);
-    priv->a_editable_set    =   TRUE;
+    priv->a_prop_editable           =   g_value_get_boolean (value);
+    priv->a_prop_editable_set       =   TRUE;
 
-    priv->a_activatable     =   FALSE;
-    priv->a_activatable_set =   TRUE;
+    priv->a_prop_activatable        =   FALSE;
+    priv->a_prop_activatable_set    =   TRUE;
 
-    if (priv->a_editable)
+    if (priv->a_prop_editable)
         g_object_set (crcc, "mode", GTK_CELL_RENDERER_MODE_EDITABLE, NULL);
     else
         g_object_set (crcc, "mode", GTK_CELL_RENDERER_MODE_INERT, NULL);
@@ -29,13 +29,13 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     break;
     //  ............................................................................................
     case PROP_ACTIVATABLE:
-    priv->a_activatable     =   g_value_get_boolean (value);
-    priv->a_activatable_set =   TRUE;
+    priv->a_prop_activatable        =   g_value_get_boolean (value);
+    priv->a_prop_activatable_set    =   TRUE;
 
-    priv->a_editable        =   FALSE;
-    priv->a_editable_set    =   TRUE;
+    priv->a_prop_editable           =   FALSE;
+    priv->a_prop_editable_set       =   TRUE;
 
-    if (priv->a_activatable)
+    if (priv->a_prop_activatable)
         g_object_set(crcc, "mode", GTK_CELL_RENDERER_MODE_ACTIVATABLE, NULL);
     else
         g_object_set(crcc, "mode", GTK_CELL_RENDERER_MODE_INERT, NULL);
@@ -45,30 +45,23 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_ACTIVATABLE_SET]);
     break;
     //  ............................................................................................
-    case PROP_TEXT:
-    if ( priv->d_text ) g_free (priv->d_text);
+    case PROP_COLOR_RGBA_TEXT:
+    if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
 
-    priv->d_text = g_value_dup_string (value);
+    priv->d_prop_color_rgba_text = g_value_dup_string (value);
     g_object_notify_by_pspec (object, pspec);
     break;
     //  ............................................................................................
-    case PROP_COLOR_RGBA:
-    {
-        GdkRGBA rgba;
-
-        if ( ! g_value_get_string (value) )
-            set_color (crcc, NULL);                                                                 // reset to background_set to FALSE
-        else if (gdk_rgba_parse(&rgba, g_value_get_string (value)))
-            set_color(crcc, &rgba);
-        else
-            g_warning ("Don't know color '%s'", g_value_get_string (value));
-
-        g_object_notify_by_pspec(object, text_cell_renderer_props[PROP_COLOR_RGBA]);
-    }
+    case PROP_EDITABLE_SET:
+    priv->a_prop_editable_set = g_value_get_boolean (value);
     break;
     //  ............................................................................................
-    case PROP_EDITABLE_SET:
-    priv->a_editable_set = g_value_get_boolean (value);
+    case PROP_ACTIVATABLE_SET:
+    priv->a_prop_activatable_set = g_value_get_boolean (value);
+    break;
+    //  ............................................................................................
+    case PROP_COLOR_RGBA_TEXT_SET:
+    priv->a_prop_color_rgba_text_set = g_value_get_boolean (value);
     break;
     //  ............................................................................................
     default:

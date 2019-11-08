@@ -108,37 +108,75 @@ static void       gtk_erg_cell_renderer_color_chooser_get_aligned_area          
 									 const GdkRectangle    *cell_area,
 									 GdkRectangle          *aligned_area);
 
-
+/*
 static          void    set_color(
                             GtkErgCellRendererColorChooser  *   celltext    ,
-                            GdkRGBA                         *   rgba        );
+                            GdkRGBA                         *   rgba        );*/
+//  ************************************************************************************************
+//  Custom marshaler
+//  ************************************************************************************************
+#define g_marshal_value_peek_string(v)  ( (v)->data[0].v_pointer )
 
-static inline   gboolean  show_placeholder_text(
-                            GtkErgCellRendererColorChooser  *   celltext    );
+static void
+custom__marshal_VOID__STRING_STRING(
+    GClosure     *closure,
+    GValue       *return_value G_GNUC_UNUSED,
+    guint         n_param_values,
+    const GValue *param_values,
+    gpointer      invocation_hint G_GNUC_UNUSED,
+    gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__STRING_STRING) (gpointer data1,
+                                                    gpointer arg1,
+                                                    gpointer arg2,
+                                                    gpointer data2);
+  GCClosure *cc = (GCClosure *) closure;
+  gpointer data1, data2;
+  GMarshalFunc_VOID__STRING_STRING callback;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__STRING_STRING) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_string (param_values + 1),
+            g_marshal_value_peek_string (param_values + 2),
+            data2);
+}
 //  ************************************************************************************************
 //  Structs etc...
 //  ************************************************************************************************
 enum
 {
-      EDITED        ,
+      EDITED            ,
       LAST_SIGNAL
 };
 
 enum
 {
-    PROP_0              ,
+    PROP_0                      ,
 
-    PROP_EDITABLE       ,
-    PROP_ACTIVATABLE    ,
+    //  set by app
+    PROP_EDITABLE               ,
+    PROP_ACTIVATABLE            ,
 
-    PROP_TEXT           ,
-
-    PROP_COLOR_RGBA     ,
-
+    //  flagged by gtk_tree_view_column_new_with_attributes(... ) to be set by GtkTreeView
+    //  before call to render()
+    PROP_COLOR_RGBA_TEXT        ,
     //  ............................................................................................
-
-    PROP_EDITABLE_SET       ,
-    PROP_ACTIVATABLE_SET    ,
+    PROP_EDITABLE_SET           ,
+    PROP_ACTIVATABLE_SET        ,
+    PROP_COLOR_RGBA_TEXT_SET    ,
 
     LAST_PROP
 };
@@ -150,23 +188,18 @@ static GParamSpec   *   text_cell_renderer_props    [LAST_PROP];
 
 struct _GtkErgCellRendererColorChooserPrivate
 {
+    //GtkWidget           *   d_color_button;                                                       // for later
 
-    GtkWidget           *   d_color_button;
+    GdkRGBA                 a_color;    // will be set by GtkErgCellRendererColorChooser after GtkColorChooserDialog has returned
 
-    GdkRGBA                 a_color;
-    GdkRGBA                 a_fg;
-    GdkRGBA                 a_bg;
+    gchar               *   d_prop_color_rgba_text;                                                 // will be set by GtkTreeView
 
-    gchar               *   d_text;
-    gchar               *   placeholder_text;
+    guint                   a_prop_editable             :   1;
+    guint                   a_prop_activatable          :   1;
 
-    gulong                  focus_out_id;
-
-    guint                   a_editable          :   1;
-    guint                   a_activatable       :   1;
-
-    guint                   a_editable_set      :   1;
-    guint                   a_activatable_set   :   1;
+    guint                   a_prop_editable_set         :   1;
+    guint                   a_prop_activatable_set      :   1;
+    guint                   a_prop_color_rgba_text_set  :   1;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GtkErgCellRendererColorChooser, gtk_erg_cell_renderer_color_chooser, GTK_TYPE_CELL_RENDERER)
@@ -186,6 +219,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GtkErgCellRendererColorChooser, gtk_erg_cell_rendere
 //  ************************************************************************************************
 //  ...
 //  ************************************************************************************************
+/*
 static void
 set_color(
     GtkErgCellRendererColorChooser  *   _i_crcc ,
@@ -265,18 +299,29 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
     context = gtk_widget_get_style_context (widget);
 
   //if (priv->background_set && (flags & GTK_CELL_RENDERER_SELECTED) == 0)
+    //{
+    GdkRGBA   color;
+    //color.red   =   0.90;
+    //color.green =   0.20;
+    //color.blue  =   0.35;
+    //color.alpha =   1.0;
+
+    if ( priv->d_prop_color_rgba_text )
     {
-        GdkRGBA   color;
+        printf("(crcc)render:%s\n", priv->d_prop_color_rgba_text);
+    }
+
+    if ( ! gdk_rgba_parse(&color, priv->d_prop_color_rgba_text ) )
+    {
         color.red   =   0.90;
         color.green =   0.20;
         color.blue  =   0.35;
         color.alpha =   1.0;
-
-      gdk_cairo_rectangle (cr, background_area);
-      gdk_cairo_set_source_rgba (cr, &priv->a_color);
-      //gdk_cairo_set_source_rgba (cr, &color);
-      cairo_fill (cr);
     }
+
+    gdk_cairo_set_source_rgba   (cr, &color);
+    gdk_cairo_rectangle         (cr, background_area);
+    cairo_fill                  (cr);
 
     //gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
 

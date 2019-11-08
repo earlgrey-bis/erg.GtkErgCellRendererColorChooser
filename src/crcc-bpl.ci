@@ -1,13 +1,20 @@
 static void
-gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *celltext)
+gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *crcc)
 {
     GtkErgCellRendererColorChooserPrivate   *   priv;
-    GtkCellRenderer                         *   cell = GTK_CELL_RENDERER (celltext);
+    GtkCellRenderer                         *   cell = GTK_CELL_RENDERER (crcc);
 
-    celltext->priv = gtk_erg_cell_renderer_color_chooser_get_instance_private (celltext);
-    priv = celltext->priv;
+    crcc->priv                      =   gtk_erg_cell_renderer_color_chooser_get_instance_private(crcc);
 
-    priv->d_text = NULL;
+    priv                            =   crcc->priv;
+
+    priv->a_prop_editable           =   FALSE;
+    priv->a_prop_activatable        =   FALSE;
+    priv->d_prop_color_rgba_text    =   NULL;
+
+    priv->a_prop_editable_set           =   FALSE;
+    priv->a_prop_activatable_set        =   FALSE;
+    priv->a_prop_color_rgba_text_set    =   FALSE;
 
     gtk_cell_renderer_set_alignment (cell, 0.0, 0.5);
     gtk_cell_renderer_set_padding   (cell, 2, 2);
@@ -65,51 +72,41 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
 
 
   text_cell_renderer_props[PROP_EDITABLE] =
-      g_param_spec_boolean ("editable",
+      g_param_spec_boolean( "editable",
                             P_("Editable"),
                             P_("Whether the text can be modified by the user"),
                             FALSE,
                             GTK_PARAM_READWRITE);
 
   text_cell_renderer_props[PROP_ACTIVATABLE] =
-      g_param_spec_boolean ("activatable",
+      g_param_spec_boolean( "activatable",
                             P_("Aditable"),
                             P_("Whether the widget can be activated"),
                             FALSE,
                             GTK_PARAM_READWRITE);
 
-  text_cell_renderer_props[PROP_TEXT] =
-      g_param_spec_string ("text",
-                           P_("Text"),
-                           P_("Text to render"),
-                           NULL,
-                           GTK_PARAM_READWRITE);
-
-  /**
-   * GtkErgCellRendererColorChooser:color-rgba:
-   *
-   * Color as a #GdkRGBA
-   *
-   * Since: 3.0
-   */
-  text_cell_renderer_props[PROP_COLOR_RGBA] =
-      g_param_spec_boxed ("color-rgba"              ,
-                          P_("Color as RGBA")       ,
-                          P_("Color as a GdkRGBA")  ,
-                          GDK_TYPE_RGBA             ,
-                          GTK_PARAM_READWRITE       );
+  text_cell_renderer_props[PROP_COLOR_RGBA_TEXT] =
+      g_param_spec_string(  "color-rgba-text",
+                            P_("Text"),
+                            P_("Text representing a GdkRGBA"),
+                            NULL,
+                            GTK_PARAM_READWRITE);
 
     // Style props are set or not
     #define ADD_SET_PROP(propname, propval, nick, blurb)                                                                \
         text_cell_renderer_props[propval] = g_param_spec_boolean(propname, nick, blurb, FALSE, GTK_PARAM_READWRITE)
 
-    ADD_SET_PROP ("editable-set", PROP_EDITABLE_SET         ,
-        P_("Editability set")                               ,
-        P_("Whether this tag affects text editability")     );
+    ADD_SET_PROP ("editable-set"        , PROP_EDITABLE_SET         ,
+        P_("Editability set")                                       ,
+        P_("Whether this tag affects text editability")             );
 
-    ADD_SET_PROP ("activatable-set", PROP_ACTIVATABLE_SET   ,
-        P_("Activatability set")                            ,
-        P_("Whether this tag affects activatability")       );
+    ADD_SET_PROP ("activatable-set"     , PROP_ACTIVATABLE_SET      ,
+        P_("Activatability set")                                    ,
+        P_("Whether this tag affects activatability")               );
+
+    ADD_SET_PROP ("color-rgba-text-set" , PROP_COLOR_RGBA_TEXT_SET  ,
+        P_("Activatability set")                                    ,
+        P_("Whether this tag affects activatability")               );
 
   g_object_class_install_properties (object_class, LAST_PROP, text_cell_renderer_props);
 
@@ -130,7 +127,7 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GtkErgCellRendererColorChooserClass, edited),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__STRING,//_gtk_marshal_VOID__STRING_STRING,
+		  custom__marshal_VOID__STRING_STRING,
 		  G_TYPE_NONE, 2,
 		  G_TYPE_STRING,
 		  G_TYPE_STRING);
