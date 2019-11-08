@@ -2,79 +2,171 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="D" />
-	<File name="src/GtkErgCellRendererColorChooser.c" open="1" top="1" tabpos="30" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/gtkcellrenderertext__v-3.24.5.h" open="1" top="0" tabpos="33" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2284" topLine="0" />
+			<Cursor1 position="2107" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+			<Collapse line="43" />
+		</Folding>
+	</File>
+	<File name="src/crcc-get.ci" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="672" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/crcc-edit.ci" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6776" topLine="173" />
+		</Cursor>
+	</File>
+	<File name="src/crcc-bpl.ci" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3992" topLine="58" />
+		</Cursor>
+	</File>
+	<File name="src/gtkcelleditable__v-3.24.5.h" open="1" top="0" tabpos="35" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+			<Collapse line="37" />
+			<Collapse line="46" />
+		</Folding>
+	</File>
+	<File name="src/GtkErgCellRendererColorChooser.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2546" topLine="1" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+		</Folding>
+	</File>
+	<File name="src/gtkcellrenderertext__v-3.24.5.c" open="1" top="1" tabpos="32" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="49656" topLine="1104" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+			<Collapse line="33" />
+			<Collapse line="93" />
+			<Collapse line="98" />
+			<Collapse line="213" />
+			<Collapse line="287" />
+			<Collapse line="303" />
+			<Collapse line="323" />
+			<Collapse line="339" />
+			<Collapse line="471" />
+			<Collapse line="491" />
+			<Collapse line="508" />
+			<Collapse line="530" />
+			<Collapse line="549" />
+			<Collapse line="566" />
+			<Collapse line="585" />
+			<Collapse line="884" />
+			<Collapse line="948" />
+			<Collapse line="952" />
+			<Collapse line="954" />
+			<Collapse line="962" />
+			<Collapse line="964" />
+			<Collapse line="975" />
+			<Collapse line="979" />
+			<Collapse line="981" />
+			<Collapse line="989" />
+			<Collapse line="991" />
+			<Collapse line="1001" />
+			<Collapse line="1005" />
+			<Collapse line="1008" />
+			<Collapse line="1024" />
+			<Collapse line="1027" />
+			<Collapse line="1041" />
+			<Collapse line="1059" />
+			<Collapse line="1071" />
+			<Collapse line="1211" />
+			<Collapse line="1216" />
+			<Collapse line="1227" />
+			<Collapse line="1234" />
+			<Collapse line="1239" />
+			<Collapse line="1250" />
+			<Collapse line="1265" />
+			<Collapse line="1297" />
+			<Collapse line="1301" />
+			<Collapse line="1399" />
+			<Collapse line="1407" />
+			<Collapse line="1415" />
+			<Collapse line="1423" />
+			<Collapse line="1431" />
+			<Collapse line="1454" />
+			<Collapse line="1459" />
+			<Collapse line="1603" />
+			<Collapse line="1638" />
+			<Collapse line="1640" />
+			<Collapse line="1660" />
+			<Collapse line="1671" />
+			<Collapse line="1689" />
+			<Collapse line="1697" />
+			<Collapse line="1892" />
+			<Collapse line="1898" />
+			<Collapse line="1904" />
+			<Collapse line="1925" />
+			<Collapse line="1941" />
+			<Collapse line="1960" />
+			<Collapse line="1966" />
+			<Collapse line="1981" />
+			<Collapse line="2007" />
+			<Collapse line="2036" />
+			<Collapse line="2058" />
+			<Collapse line="2074" />
+			<Collapse line="2085" />
+			<Collapse line="2092" />
+			<Collapse line="2103" />
+			<Collapse line="2113" />
+			<Collapse line="2170" />
+			<Collapse line="2190" />
+			<Collapse line="2219" />
+			<Collapse line="2222" />
+			<Collapse line="2240" />
+		</Folding>
+	</File>
+	<File name="src/GtkErgCellRendererColorChooser.c" open="1" top="0" tabpos="34" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10423" topLine="125" />
 		</Cursor>
 		<Folding>
 			<Collapse line="0" />
 			<Collapse line="35" />
-			<Collapse line="111" />
-			<Collapse line="116" />
-			<Collapse line="231" />
-			<Collapse line="257" />
-			<Collapse line="277" />
-			<Collapse line="292" />
-			<Collapse line="311" />
-			<Collapse line="315" />
-			<Collapse line="317" />
-			<Collapse line="325" />
-			<Collapse line="327" />
-			<Collapse line="337" />
-			<Collapse line="341" />
-			<Collapse line="343" />
-			<Collapse line="351" />
-			<Collapse line="353" />
-			<Collapse line="362" />
-			<Collapse line="377" />
-			<Collapse line="394" />
-			<Collapse line="436" />
-			<Collapse line="450" />
-			<Collapse line="456" />
-			<Collapse line="462" />
-			<Collapse line="621" />
-			<Collapse line="637" />
-			<Collapse line="648" />
-			<Collapse line="655" />
-			<Collapse line="666" />
-			<Collapse line="678" />
-			<Collapse line="735" />
-			<Collapse line="755" />
-			<Collapse line="785" />
-			<Collapse line="790" />
+			<Collapse line="121" />
+			<Collapse line="127" />
+			<Collapse line="151" />
+			<Collapse line="192" />
+			<Collapse line="196" />
+			<Collapse line="198" />
+			<Collapse line="206" />
+			<Collapse line="210" />
+			<Collapse line="237" />
+			<Collapse line="267" />
+			<Collapse line="309" />
+			<Collapse line="331" />
+			<Collapse line="347" />
+			<Collapse line="352" />
+			<Collapse line="372" />
+			<Collapse line="373" />
 		</Folding>
 	</File>
-	<File name="src/crcc-class-init.ci" open="1" top="0" tabpos="28" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/crcc-set.ci" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5101" topLine="0" />
+			<Cursor1 position="2660" topLine="16" />
 		</Cursor>
 	</File>
-	<File name="src/crcc-set.ci" open="1" top="0" tabpos="27" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/gtkcelleditable__v-3.24.5.c" open="1" top="0" tabpos="36" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="726" topLine="3" />
+			<Cursor1 position="1705" topLine="52" />
 		</Cursor>
 		<Folding>
-			<Collapse line="28" />
-			<Collapse line="43" />
-			<Collapse line="58" />
-			<Collapse line="63" />
-			<Collapse line="74" />
-			<Collapse line="81" />
-			<Collapse line="86" />
-			<Collapse line="97" />
-		</Folding>
-	</File>
-	<File name="src/GtkErgCellRendererColorChooser.h" open="1" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2823" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="src/crcc-get.ci" open="1" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="373" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="36" />
+			<Collapse line="0" />
+			<Collapse line="17" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>

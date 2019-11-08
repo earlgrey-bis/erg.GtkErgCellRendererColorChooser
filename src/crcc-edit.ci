@@ -1,3 +1,4 @@
+/*
 static void
 gtk_erg_cell_renderer_color_chooser_editing_done (GtkCellEditable *entry,
 				     gpointer         data)
@@ -121,32 +122,33 @@ gtk_erg_cell_renderer_color_chooser_focus_out_event (GtkWidget *entry,
   gtk_cell_editable_editing_done (GTK_CELL_EDITABLE (entry));
   gtk_cell_editable_remove_widget (GTK_CELL_EDITABLE (entry));
 
-  /* entry needs focus-out-event */
+  // entry needs focus-out-event
   return FALSE;
 }
-
+*/
 static GtkCellEditable *
-gtk_erg_cell_renderer_color_chooser_start_editing (GtkCellRenderer      *cell,
-				      GdkEvent             *event,
-				      GtkWidget            *widget,
-				      const gchar          *path,
-				      const GdkRectangle   *background_area,
-				      const GdkRectangle   *cell_area,
-				      GtkCellRendererState  flags)
+gtk_erg_cell_renderer_color_chooser_start_editing(
+    GtkCellRenderer         *   cell,
+    GdkEvent                *   event,
+    GtkWidget               *   widget,
+    const gchar             *   path,
+    const GdkRectangle      *   background_area,
+    const GdkRectangle      *   cell_area,
+    GtkCellRendererState        flags)
 {
-  GtkErgCellRendererColorChooser *celltext;
-  GtkErgCellRendererColorChooserPrivate *priv;
-  gfloat xalign, yalign;
+    GtkErgCellRendererColorChooser          *   crcc;
+    GtkErgCellRendererColorChooserPrivate   *   priv;
+    gfloat                                      xalign, yalign;
 
     printf("(crcc)start editing\n");
 
-  celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
-  priv = celltext->priv;
+    crcc    =   GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
+    priv    =   crcc->priv;
 
-  /* If the cell isn't editable we return NULL. */
-  if (priv->editable == FALSE)
+    // If the cell isn't editable we return NULL.
+    //if (priv->editable == FALSE)
     return NULL;
-
+    /*
   gtk_cell_renderer_get_alignment (cell, &xalign, &yalign);
 
   priv->entry = gtk_entry_new ();
@@ -184,4 +186,50 @@ gtk_erg_cell_renderer_color_chooser_start_editing (GtkCellRenderer      *cell,
   gtk_widget_show (priv->entry);
 
   return GTK_CELL_EDITABLE (priv->entry);
+    */
+}
+
+static  gboolean
+gtk_erg_cell_renderer_color_chooser_activate(
+    GtkCellRenderer         *   crdr            ,
+    GdkEvent                *   event           ,
+    GtkWidget               *   widget          ,
+    const gchar             *   path            ,
+    const GdkRectangle      *   background_area ,
+    const GdkRectangle      *   cell_area       ,
+    GtkCellRendererState        flags           )
+{
+    GtkErgCellRendererColorChooser          *   crcc;
+    GtkErgCellRendererColorChooserPrivate   *   priv;
+    gfloat                                      xalign, yalign;
+    GdkRGBA                                     color;
+
+    printf("(crcc)activate\n");
+
+    crcc    =   GTK_ERG_CELL_RENDERER_COLOR_CHOOSER(crdr);
+    priv    =   crcc->priv;
+
+    GtkWidget * dlg = gtk_color_chooser_dialog_new(
+        "Choose color",
+        NULL);
+    g_object_ref_sink( dlg );
+
+    gint r = gtk_dialog_run( GTK_DIALOG(dlg) );
+
+    printf("(crcc)dialog returned [%i]\n", r);
+
+    if ( r == GTK_RESPONSE_OK )
+    {
+        printf("->ok\n");
+        gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(dlg), &(priv->a_color));
+    }
+
+    gtk_widget_destroy(dlg);
+
+    if ( r == GTK_RESPONSE_OK )
+    {
+        g_object_notify_by_pspec(G_OBJECT(crdr), text_cell_renderer_props[PROP_COLOR_RGBA]);
+    }
+
+    return TRUE;                                                                                    // TRUE if the event was consumed/handled
 }

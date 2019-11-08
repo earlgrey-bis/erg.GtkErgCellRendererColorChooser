@@ -37,6 +37,8 @@
 			<Add option="-Wall" />
 			<Add option="-std=c11" />
 			<Add option="`pkg-config --cflags gtk+-3.0`" />
+			<Add option="-Wno-unused-variable" />
+			<Add option="-Wno-unused-but-set-variable" />
 			<Add directory="/usr/local/gwr/gtk/v-3.24.5" />
 		</Compiler>
 		<Linker>
