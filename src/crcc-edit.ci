@@ -177,7 +177,7 @@ gtk_erg_cell_renderer_color_chooser_activate(
 
     if ( r == GTK_RESPONSE_OK )
     {
-        g_signal_emit(crcc, Crcc_signals[EDITED], 0, spath, scolor);
+        g_signal_emit(crcc, Crcc_signals[COLOR_PICKED], 0, spath, scolor);
     }
 
     g_free(spath);

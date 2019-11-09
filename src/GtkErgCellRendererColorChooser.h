@@ -51,17 +51,20 @@ struct _GtkErgCellRendererColorChooser
 
 struct _GtkErgCellRendererColorChooserClass
 {
-  GtkCellRendererClass parent_class;
+    GtkCellRendererClass parent_class;
 
-  void (* edited) (GtkErgCellRendererColorChooser *cell_renderer_text,
-		   const gchar         *path,
-		   const gchar         *new_text);
+    void (*color_picked)
+    (
+        GtkErgCellRendererColorChooser  *   _i_cell_renderer_text,
+        const gchar                     *   _i_path,
+        const gchar                     *   _i_new_text
+    );
 
-  /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+    /* Padding for future expansion */
+    void (*_gtk_reserved1) (void);
+    void (*_gtk_reserved2) (void);
+    void (*_gtk_reserved3) (void);
+    void (*_gtk_reserved4) (void);
 };
 
 GDK_AVAILABLE_IN_ALL    GType               gtk_erg_cell_renderer_color_chooser_get_type                    (void) G_GNUC_CONST;

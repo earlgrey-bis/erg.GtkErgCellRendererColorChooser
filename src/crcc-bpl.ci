@@ -11,6 +11,10 @@ gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *crcc)
     priv->a_prop_editable           =   FALSE;
     priv->a_prop_activatable        =   FALSE;
     priv->d_prop_color_rgba_text    =   NULL;
+    priv->a_prop_color_rgba.red     =   0.8;
+    priv->a_prop_color_rgba.green   =   0.6;
+    priv->a_prop_color_rgba.blue    =   0.6;
+    priv->a_prop_color_rgba.alpha   =   1.0;
 
     priv->a_prop_editable_set           =   FALSE;
     priv->a_prop_activatable_set        =   FALSE;
@@ -23,8 +27,8 @@ gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *crcc)
 static void
 gtk_erg_cell_renderer_color_chooser_finalize (GObject *object)
 {
-    GtkCellRendererText         *   celltext    = GTK_CELL_RENDERER_TEXT (object);
-    GtkCellRendererTextPrivate  *   priv        = celltext->priv;
+    GtkErgCellRendererColorChooser          *   crcc    = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER(object);
+    GtkErgCellRendererColorChooserPrivate   *   priv    = crcc->priv;
 
     //g_clear_object (&priv->entry);
 
@@ -123,7 +127,7 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
   g_object_class_install_properties (object_class, LAST_PROP, Crcc_props);
 
   /**
-   * GtkErgCellRendererColorChooser::edited:
+   * GtkErgCellRendererColorChooser::color-picked:
    * @renderer: the object which received the signal
    * @path: the path identifying the edited cell
    * @new_text: the new text
@@ -133,11 +137,11 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
    * It is the responsibility of the application to update the model
    * and store @new_text at the position indicated by @path.
    */
-  Crcc_signals [EDITED] =
-    g_signal_new (I_("edited"),
+  Crcc_signals [COLOR_PICKED] =
+    g_signal_new (I_("color-picked"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkErgCellRendererColorChooserClass, edited),
+		  G_STRUCT_OFFSET (GtkErgCellRendererColorChooserClass, color_picked),
 		  NULL, NULL,
 		  custom__marshal_VOID__STRING_STRING,
 		  G_TYPE_NONE, 2,

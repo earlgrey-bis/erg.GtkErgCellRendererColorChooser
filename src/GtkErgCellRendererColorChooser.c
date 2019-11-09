@@ -190,7 +190,7 @@ custom__marshal_VOID__STRING_STRING(
 //  ************************************************************************************************
 enum
 {
-    EDITED          ,
+    COLOR_PICKED    ,
     LAST_SIGNAL
 };
 
@@ -335,31 +335,13 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
 
   //if (priv->background_set && (flags & GTK_CELL_RENDERER_SELECTED) == 0)
     //{
-    GdkRGBA   color;
-    //color.red   =   0.90;
-    //color.green =   0.20;
-    //color.blue  =   0.35;
-    //color.alpha =   1.0;
-
-    //if ( priv->d_prop_color_rgba_text )
-    //{
-        //printf("(crcc)render:%s\n", priv->d_prop_color_rgba_text);
-    //}
-
-    if ( ! gdk_rgba_parse(&color, priv->d_prop_color_rgba_text ) )
-    {
-        color.red   =   0.90;
-        color.green =   0.20;
-        color.blue  =   0.35;
-        color.alpha =   1.0;
-    }
 
     r1 = *cell_area;
 
     if ( r1.width > 35 )
         r1.width = 35;
 
-    gdk_cairo_set_source_rgba   (cr, &color);
+    gdk_cairo_set_source_rgba   (cr, &priv->a_prop_color_rgba);
     gdk_cairo_rectangle         (cr, &r1);
     cairo_fill                  (cr);
 
