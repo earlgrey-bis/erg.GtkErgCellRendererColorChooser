@@ -24,8 +24,8 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     else
         g_object_set (crcc, "mode", GTK_CELL_RENDERER_MODE_INERT, NULL);
 
-    g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_EDITABLE_SET]);
-    g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_ACTIVATABLE_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_EDITABLE_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_ACTIVATABLE_SET]);
     break;
     //  ............................................................................................
     case PROP_ACTIVATABLE:
@@ -41,17 +41,59 @@ gtk_erg_cell_renderer_color_chooser_set_property (
         g_object_set(crcc, "mode", GTK_CELL_RENDERER_MODE_INERT, NULL);
 
 
-    g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_EDITABLE_SET]);
-    g_object_notify_by_pspec (object, text_cell_renderer_props[PROP_ACTIVATABLE_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_EDITABLE_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_ACTIVATABLE_SET]);
+    break;
+    //  ............................................................................................
+    case PROP_COLOR_RGBA:
+    priv->a_prop_color_rgba_set         = TRUE;
+    priv->a_prop_color_rgba_text_set    = TRUE;
+
+    priv->a_prop_color_rgba = *( (GdkRGBA*)g_value_get_boxed(value) );                              // struct copy
+
+    if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
+    priv->d_prop_color_rgba_text = gdk_rgba_to_string(&priv->a_prop_color_rgba);
+
+    g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_TEXT_SET]);
+
+    //set_bg_color (celltext, g_value_get_boxed (value));
+
+    //  NULL rgba not allowed for us
+    //if (rgba)
+    //{
+        //if (!priv->background_set)
+        //{
+            //priv->background_set = TRUE;
+            //g_object_notify_by_pspec (G_OBJECT (celltext), Crcc_props[PROP_BACKGROUND_SET]);
+        //}
+
+        //priv->background = *rgba;
+    //}
+    //else
+    //{
+    //    if (priv->background_set)
+    //    {
+    //        priv->background_set = FALSE;
+    //        g_object_notify_by_pspec (G_OBJECT (celltext), Crcc_props[PROP_BACKGROUND_SET]);
+    //    }
+    //}
     break;
     //  ............................................................................................
     case PROP_COLOR_RGBA_TEXT:
-    if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
+    priv->a_prop_color_rgba_set         = TRUE;
+    priv->a_prop_color_rgba_text_set    = TRUE;
 
+    if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
     priv->d_prop_color_rgba_text = g_value_dup_string (value);
-    g_object_notify_by_pspec (object, pspec);
+
+    gdk_rgba_parse(&priv->a_prop_color_rgba, priv->d_prop_color_rgba_text);
+
+    //g_object_notify_by_pspec (object, pspec);                                                     // less didactic
+    g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_SET]);
+    g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_TEXT_SET]);
     break;
-    //  ............................................................................................
+    //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     case PROP_EDITABLE_SET:
     priv->a_prop_editable_set = g_value_get_boolean (value);
     break;
@@ -60,10 +102,14 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     priv->a_prop_activatable_set = g_value_get_boolean (value);
     break;
     //  ............................................................................................
+    case PROP_COLOR_RGBA_SET:
+    priv->a_prop_color_rgba_set = g_value_get_boolean (value);
+    break;
+    //  ............................................................................................
     case PROP_COLOR_RGBA_TEXT_SET:
     priv->a_prop_color_rgba_text_set = g_value_get_boolean (value);
     break;
-    //  ............................................................................................
+    //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     break;

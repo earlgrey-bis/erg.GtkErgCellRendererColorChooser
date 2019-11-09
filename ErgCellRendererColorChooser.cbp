@@ -5,7 +5,7 @@
 		<Option title="ErgCellRendererColorChooser" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="src/;v-3.24.5/;" />
+		<Option virtualFolders="src/;v-3.24.5/;doc/;" />
 		<Build>
 			<Target title="D">
 				<Option output="bin/D/ErgCellRendererColorChooser" prefix_auto="1" extension_auto="1" />
@@ -44,6 +44,9 @@
 		<Linker>
 			<Add option="`pkg-config --libs gtk+-3.0`" />
 		</Linker>
+		<Unit filename="doc/tek.txt">
+			<Option virtualFolder="doc/" />
+		</Unit>
 		<Unit filename="src/GtkErgCellRendererColorChooser.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="src/" />

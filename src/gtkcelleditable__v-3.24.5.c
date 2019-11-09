@@ -108,7 +108,7 @@ gtk_cell_editable_default_init (GtkCellEditableInterface *iface)
  * @cell_editable: A #GtkCellEditable
  * @event: (nullable): The #GdkEvent that began the editing process, or
  *   %NULL if editing was initiated programmatically
- * 
+ *
  * Begins editing on a @cell_editable.
  *
  * The #GtkCellRenderer for the cell creates and returns a #GtkCellEditable from
@@ -132,8 +132,8 @@ gtk_cell_editable_start_editing (GtkCellEditable *cell_editable,
 /**
  * gtk_cell_editable_editing_done:
  * @cell_editable: A #GtkCellEditable
- * 
- * Emits the #GtkCellEditable::editing-done signal. 
+ *
+ * Emits the #GtkCellEditable::editing-done signal.
  **/
 void
 gtk_cell_editable_editing_done (GtkCellEditable *cell_editable)
@@ -146,8 +146,8 @@ gtk_cell_editable_editing_done (GtkCellEditable *cell_editable)
 /**
  * gtk_cell_editable_remove_widget:
  * @cell_editable: A #GtkCellEditable
- * 
- * Emits the #GtkCellEditable::remove-widget signal.  
+ *
+ * Emits the #GtkCellEditable::remove-widget signal.
  **/
 void
 gtk_cell_editable_remove_widget (GtkCellEditable *cell_editable)

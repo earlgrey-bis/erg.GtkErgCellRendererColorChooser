@@ -113,6 +113,38 @@ static          void    set_color(
                             GtkErgCellRendererColorChooser  *   celltext    ,
                             GdkRGBA                         *   rgba        );*/
 //  ************************************************************************************************
+//  Utils
+//  ************************************************************************************************
+static gchar*
+gdk_rgba_to_string_sharp6d(
+    GdkRGBA const * _i_rgba)
+{
+    gint        r,g,b;
+    gchar       rr          [8];
+    gchar       gg          [8];
+    gchar       bb          [8];
+    gchar   *   ret     =   NULL;
+    //  ............................................................................................
+    g_return_val_if_fail( _i_rgba, NULL );
+
+    r   =   (gint)(_i_rgba->red     * 255.0 );
+    g   =   (gint)(_i_rgba->green   * 255.0 );
+    b   =   (gint)(_i_rgba->blue    * 255.0 );
+
+    sprintf( rr, "%02x", r);
+    sprintf( gg, "%02x", g);
+    sprintf( bb, "%02x", b);
+
+    ret = g_malloc0( 1 + 6 + 1 );
+
+    ret[0]='#';
+    memcpy(ret + 1, rr, 2);
+    memcpy(ret + 3, gg, 2);
+    memcpy(ret + 5, bb, 2);
+
+    return ret;
+}
+//  ************************************************************************************************
 //  Custom marshaler
 //  ************************************************************************************************
 #define g_marshal_value_peek_string(v)  ( (v)->data[0].v_pointer )
@@ -158,8 +190,8 @@ custom__marshal_VOID__STRING_STRING(
 //  ************************************************************************************************
 enum
 {
-      EDITED            ,
-      LAST_SIGNAL
+    EDITED          ,
+    LAST_SIGNAL
 };
 
 enum
@@ -169,20 +201,20 @@ enum
     //  set by app
     PROP_EDITABLE               ,
     PROP_ACTIVATABLE            ,
-
-    //  flagged by gtk_tree_view_column_new_with_attributes(... ) to be set by GtkTreeView
-    //  before call to render()
-    PROP_COLOR_RGBA_TEXT        ,
+    //  ............................................................................................
+    PROP_COLOR_RGBA             ,
+    PROP_COLOR_RGBA_TEXT        ,   // flagged by gtk_tree_view_column_new_with_attributes(... ) to be set by GtkTreeView before call to render()
     //  ............................................................................................
     PROP_EDITABLE_SET           ,
     PROP_ACTIVATABLE_SET        ,
+    PROP_COLOR_RGBA_SET         ,
     PROP_COLOR_RGBA_TEXT_SET    ,
 
     LAST_PROP
 };
 
-static guint            text_cell_renderer_signals  [LAST_SIGNAL];
-static GParamSpec   *   text_cell_renderer_props    [LAST_PROP];
+static guint            Crcc_signals  [LAST_SIGNAL];
+static GParamSpec   *   Crcc_props    [LAST_PROP];
 
 #define GTK_ERG_CELL_RENDERER_COLOR_CHOOSER_PATH "gtk-erg-cell-renderer-color-chooser"
 
@@ -190,8 +222,7 @@ struct _GtkErgCellRendererColorChooserPrivate
 {
     //GtkWidget           *   d_color_button;                                                       // for later
 
-    GdkRGBA                 a_color;    // will be set by GtkErgCellRendererColorChooser after GtkColorChooserDialog has returned
-
+    GdkRGBA                 a_prop_color_rgba;
     gchar               *   d_prop_color_rgba_text;                                                 // will be set by GtkTreeView
 
     guint                   a_prop_editable             :   1;
@@ -199,6 +230,7 @@ struct _GtkErgCellRendererColorChooserPrivate
 
     guint                   a_prop_editable_set         :   1;
     guint                   a_prop_activatable_set      :   1;
+    guint                   a_prop_color_rgba_set       :   1;
     guint                   a_prop_color_rgba_text_set  :   1;
 };
 
@@ -232,7 +264,7 @@ set_color(
         //if ( ! priv->background_set )
         //{
             //priv->background_set = TRUE;
-            //g_object_notify_by_pspec (G_OBJECT (celltext), text_cell_renderer_props[PROP_BACKGROUND_SET]);
+            //g_object_notify_by_pspec (G_OBJECT (celltext), Crcc_props[PROP_BACKGROUND_SET]);
         //}
 
         priv->a_color = *_i_rgba;
@@ -254,7 +286,7 @@ set_fg_color (GtkErgCellRendererColorChooser *celltext,
       if (!priv->foreground_set)
         {
           priv->foreground_set = TRUE;
-          g_object_notify_by_pspec (G_OBJECT (celltext), text_cell_renderer_props[PROP_FOREGROUND_SET]);
+          g_object_notify_by_pspec (G_OBJECT (celltext), Crcc_props[PROP_FOREGROUND_SET]);
         }
 
       priv->foreground = *rgba;
@@ -264,7 +296,7 @@ set_fg_color (GtkErgCellRendererColorChooser *celltext,
       if (priv->foreground_set)
         {
           priv->foreground_set = FALSE;
-          g_object_notify_by_pspec (G_OBJECT (celltext), text_cell_renderer_props[PROP_FOREGROUND_SET]);
+          g_object_notify_by_pspec (G_OBJECT (celltext), Crcc_props[PROP_FOREGROUND_SET]);
         }
     }
 }
@@ -291,8 +323,11 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
     GtkErgCellRendererColorChooser          *   celltext    =   GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
     GtkErgCellRendererColorChooserPrivate   *   priv        =   celltext->priv;
     GtkStyleContext                         *   context;
-
-    printf("(crcc)render [%p]\n", cell);
+    GdkRectangle                                r1;
+    //  ............................................................................................
+    //printf("(crcc)render [%p]\n", cell);
+    //printf("(crcc)render bg area[%i x %i]\n", background_area->width, background_area->height);
+    //printf("(crcc)render cl area[%i x %i]\n", cell_area->width, cell_area->height);
 
     //layout = get_layout (celltext, widget, cell_area, flags);
     //get_size (cell, widget, cell_area, layout, &x_offset, &y_offset, NULL, NULL);
@@ -306,10 +341,10 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
     //color.blue  =   0.35;
     //color.alpha =   1.0;
 
-    if ( priv->d_prop_color_rgba_text )
-    {
-        printf("(crcc)render:%s\n", priv->d_prop_color_rgba_text);
-    }
+    //if ( priv->d_prop_color_rgba_text )
+    //{
+        //printf("(crcc)render:%s\n", priv->d_prop_color_rgba_text);
+    //}
 
     if ( ! gdk_rgba_parse(&color, priv->d_prop_color_rgba_text ) )
     {
@@ -319,8 +354,13 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
         color.alpha =   1.0;
     }
 
+    r1 = *cell_area;
+
+    if ( r1.width > 35 )
+        r1.width = 35;
+
     gdk_cairo_set_source_rgba   (cr, &color);
-    gdk_cairo_rectangle         (cr, background_area);
+    gdk_cairo_rectangle         (cr, &r1);
     cairo_fill                  (cr);
 
     //gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
@@ -356,7 +396,7 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_width (GtkCellRenderer *cell,
     GtkErgCellRendererColorChooserPrivate *priv;
     GtkErgCellRendererColorChooser        *celltext;
 
-    printf("(crcc)preferred w\n");
+    //printf("(crcc)preferred w\n");
 
 
     celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
@@ -364,8 +404,6 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_width (GtkCellRenderer *cell,
 
     *( minimum_size )   = 40;
     *( natural_size )   = 40;
-
-
 }
 
 static void
@@ -377,7 +415,7 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_height_for_width (GtkCellRende
 {
     GtkErgCellRendererColorChooser  *   celltext;
 
-    printf("(crcc)preferred h for w\n");
+    //printf("(crcc)preferred h for w\n");
 
   celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
 
@@ -393,7 +431,7 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_height (GtkCellRenderer *cell,
 {
   gint min_width;
 
-    printf("(crcc)preferred h\n");
+    //printf("(crcc)preferred h\n");
 
   /* Thankfully cell renderers dont rotate, so they only have to do
    * height-for-width and not the opposite. Here we have only to return

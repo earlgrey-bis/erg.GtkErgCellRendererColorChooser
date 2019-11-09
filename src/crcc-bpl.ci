@@ -71,30 +71,38 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
     cell_class->get_aligned_area                = gtk_erg_cell_renderer_color_chooser_get_aligned_area;
 
 
-  text_cell_renderer_props[PROP_EDITABLE] =
+  Crcc_props[PROP_EDITABLE] =
       g_param_spec_boolean( "editable",
                             P_("Editable"),
                             P_("Whether the text can be modified by the user"),
                             FALSE,
                             GTK_PARAM_READWRITE);
 
-  text_cell_renderer_props[PROP_ACTIVATABLE] =
+  Crcc_props[PROP_ACTIVATABLE] =
       g_param_spec_boolean( "activatable",
                             P_("Aditable"),
                             P_("Whether the widget can be activated"),
                             FALSE,
                             GTK_PARAM_READWRITE);
 
-  text_cell_renderer_props[PROP_COLOR_RGBA_TEXT] =
+  Crcc_props[PROP_COLOR_RGBA] =
+      g_param_spec_boxed ("color-rgba",
+                          P_("Color as RGBA"),
+                          P_("Color as a GdkRGBA"),
+                          GDK_TYPE_RGBA,
+                          GTK_PARAM_READWRITE);
+
+
+  Crcc_props[PROP_COLOR_RGBA_TEXT] =
       g_param_spec_string(  "color-rgba-text",
-                            P_("Text"),
+                            P_("Color as RGBA text"),
                             P_("Text representing a GdkRGBA"),
                             NULL,
                             GTK_PARAM_READWRITE);
 
     // Style props are set or not
     #define ADD_SET_PROP(propname, propval, nick, blurb)                                                                \
-        text_cell_renderer_props[propval] = g_param_spec_boolean(propname, nick, blurb, FALSE, GTK_PARAM_READWRITE)
+        Crcc_props[propval] = g_param_spec_boolean(propname, nick, blurb, FALSE, GTK_PARAM_READWRITE)
 
     ADD_SET_PROP ("editable-set"        , PROP_EDITABLE_SET         ,
         P_("Editability set")                                       ,
@@ -104,11 +112,15 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
         P_("Activatability set")                                    ,
         P_("Whether this tag affects activatability")               );
 
-    ADD_SET_PROP ("color-rgba-text-set" , PROP_COLOR_RGBA_TEXT_SET  ,
-        P_("Activatability set")                                    ,
-        P_("Whether this tag affects activatability")               );
+    ADD_SET_PROP ("color-rgba-set"      , PROP_COLOR_RGBA_SET       ,
+        P_("Color as GdkRGBA set")                                  ,
+        P_("...")                                                   );
 
-  g_object_class_install_properties (object_class, LAST_PROP, text_cell_renderer_props);
+    ADD_SET_PROP ("color-rgba-text-set" , PROP_COLOR_RGBA_TEXT_SET  ,
+        P_("Color as GdkRGBA text")                                 ,
+        P_("...")                                                   );
+
+  g_object_class_install_properties (object_class, LAST_PROP, Crcc_props);
 
   /**
    * GtkErgCellRendererColorChooser::edited:
@@ -121,7 +133,7 @@ gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserCl
    * It is the responsibility of the application to update the model
    * and store @new_text at the position indicated by @path.
    */
-  text_cell_renderer_signals [EDITED] =
+  Crcc_signals [EDITED] =
     g_signal_new (I_("edited"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,

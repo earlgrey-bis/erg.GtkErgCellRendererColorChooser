@@ -239,7 +239,7 @@ gtk_cell_renderer_text_class_init (GtkCellRendererTextClass *class)
   GtkCellRendererClass *cell_class = GTK_CELL_RENDERER_CLASS (class);
 
   object_class->finalize = gtk_cell_renderer_text_finalize;
-  
+
   object_class->get_property = gtk_cell_renderer_text_get_property;
   object_class->set_property = gtk_cell_renderer_text_set_property;
 
@@ -795,7 +795,7 @@ gtk_cell_renderer_text_get_property (GObject        *object,
     case PROP_FONT:
         g_value_take_string (value, pango_font_description_to_string (priv->font));
       break;
-      
+
     case PROP_FONT_DESC:
       g_value_set_boxed (value, priv->font);
       break;
@@ -831,7 +831,7 @@ gtk_cell_renderer_text_get_property (GObject        *object,
     case PROP_SCALE:
       g_value_set_double (value, priv->font_scale);
       break;
-      
+
     case PROP_EDITABLE:
       g_value_set_boolean (value, priv->editable);
       break;
@@ -846,7 +846,7 @@ gtk_cell_renderer_text_get_property (GObject        *object,
 
     case PROP_RISE:
       g_value_set_int (value, priv->rise);
-      break;  
+      break;
 
     case PROP_LANGUAGE:
       g_value_set_static_string (value, pango_language_to_string (priv->language));
@@ -855,7 +855,7 @@ gtk_cell_renderer_text_get_property (GObject        *object,
     case PROP_ELLIPSIZE:
       g_value_set_enum (value, priv->ellipsize);
       break;
-      
+
     case PROP_WRAP_MODE:
       g_value_set_enum (value, priv->wrap_mode);
       break;
@@ -863,7 +863,7 @@ gtk_cell_renderer_text_get_property (GObject        *object,
     case PROP_WRAP_WIDTH:
       g_value_set_int (value, priv->wrap_width);
       break;
-      
+
     case PROP_ALIGN:
       g_value_set_enum (value, priv->align);
       break;
@@ -885,14 +885,14 @@ gtk_cell_renderer_text_get_property (GObject        *object,
       {
 	PangoFontMask mask = get_property_font_set_mask (param_id);
 	g_value_set_boolean (value, (pango_font_description_get_set_fields (priv->font) & mask) != 0);
-	
+
 	break;
       }
 
     case PROP_SCALE_SET:
       g_value_set_boolean (value, priv->scale_set);
       break;
-      
+
     case PROP_EDITABLE_SET:
       g_value_set_boolean (value, priv->editable_set);
       break;
@@ -920,14 +920,14 @@ gtk_cell_renderer_text_get_property (GObject        *object,
     case PROP_ALIGN_SET:
       g_value_set_boolean (value, priv->align_set);
       break;
-      
+
     case PROP_WIDTH_CHARS:
       g_value_set_int (value, priv->width_chars);
-      break;  
+      break;
 
     case PROP_MAX_WIDTH_CHARS:
       g_value_set_int (value, priv->max_width_chars);
-      break;  
+      break;
 
     case PROP_PLACEHOLDER_TEXT:
       g_value_set_string (value, priv->placeholder_text);
@@ -1001,7 +1001,7 @@ set_font_desc_fields (PangoFontDescription *desc,
 		      PangoFontMask         to_set)
 {
   PangoFontMask changed_mask = 0;
-  
+
   if (to_set & PANGO_FONT_MASK_FAMILY)
     {
       const char *family = pango_font_description_get_family (desc);
@@ -1029,7 +1029,7 @@ set_font_desc_fields (PangoFontDescription *desc,
 	  size = 10 * PANGO_SCALE;
 	  changed_mask |= PANGO_FONT_MASK_SIZE;
 	}
-      
+
       pango_font_description_set_size (desc, size);
     }
 
@@ -1511,7 +1511,7 @@ gtk_cell_renderer_text_set_property (GObject      *object,
 
 /**
  * gtk_cell_renderer_text_new:
- * 
+ *
  * Creates a new #GtkCellRendererText. Adjust how text is drawn using
  * object properties. Object properties can be
  * set globally (with g_object_set()). Also, with #GtkTreeViewColumn,
@@ -1519,7 +1519,7 @@ gtk_cell_renderer_text_set_property (GObject      *object,
  * you can bind the “text” property on the cell renderer to a string
  * value in the model, thus rendering a different string in each row
  * of the #GtkTreeView
- * 
+ *
  * Returns: the new cell renderer
  **/
 GtkCellRenderer *
@@ -1543,7 +1543,7 @@ add_attr (PangoAttrList  *attr_list,
 {
   attr->start_index = 0;
   attr->end_index = G_MAXINT;
-  
+
   pango_attr_list_insert (attr_list, attr);
 }
 
@@ -1575,11 +1575,11 @@ get_layout (GtkCellRendererText *celltext,
   if (!placeholder_layout && cell_area)
     {
       /* Add options that affect appearance but not size */
-      
+
       /* note that background doesn't go here, since it affects
        * background_area not the PangoLayout area
        */
-      
+
       if (priv->foreground_set
 	  && (flags & GTK_CELL_RENDERER_SELECTED) == 0)
         {
@@ -1705,7 +1705,7 @@ get_layout (GtkCellRendererText *celltext,
 
       pango_layout_set_alignment (layout, align);
     }
-  
+
   return layout;
 }
 
@@ -1763,7 +1763,7 @@ get_size (GtkCellRenderer    *cell,
       gtk_cell_renderer_set_fixed_size (cell,
 					cell_width, 2 * ypad +
 					priv->fixed_height_rows * PANGO_PIXELS (row_height));
-      
+
       if (height)
 	{
 	  *height = cell_height;
@@ -1773,7 +1773,7 @@ get_size (GtkCellRenderer    *cell,
       if (width == NULL)
 	return;
     }
-  
+
   if (layout)
     g_object_ref (layout);
   else
@@ -1794,7 +1794,7 @@ get_size (GtkCellRenderer    *cell,
 	{
 	  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
 	    *x_offset = (1.0 - xalign) * (cell_area->width - (rect.width + (2 * xpad)));
-	  else 
+	  else
 	    *x_offset = xalign * (cell_area->width - (rect.width + (2 * xpad)));
 
 	  if ((priv->ellipsize_set && priv->ellipsize != PANGO_ELLIPSIZE_NONE) || priv->wrap_width != -1)
@@ -2029,7 +2029,7 @@ gtk_cell_renderer_text_start_editing (GtkCellRenderer      *cell,
   if (priv->text)
     gtk_entry_set_text (GTK_ENTRY (priv->entry), priv->text);
   g_object_set_data_full (G_OBJECT (priv->entry), I_(GTK_CELL_RENDERER_TEXT_PATH), g_strdup (path), g_free);
-  
+
   gtk_editable_select_region (GTK_EDITABLE (priv->entry), 0, -1);
 
   priv->in_entry_menu = FALSE;
@@ -2050,7 +2050,7 @@ gtk_cell_renderer_text_start_editing (GtkCellRenderer      *cell,
     g_signal_connect (priv->entry, "populate-popup",
                       G_CALLBACK (gtk_cell_renderer_text_populate_popup),
                       celltext);
- 
+
   gtk_widget_show (priv->entry);
 
   return GTK_CELL_EDITABLE (priv->entry);
@@ -2060,7 +2060,7 @@ gtk_cell_renderer_text_start_editing (GtkCellRenderer      *cell,
  * gtk_cell_renderer_text_set_fixed_height_from_font:
  * @renderer: A #GtkCellRendererText
  * @number_of_rows: Number of rows of text each cell renderer is allocated, or -1
- * 
+ *
  * Sets the height of a renderer to explicitly be determined by the “font” and
  * “y_pad” property set on it.  Further changes in these properties do not
  * affect the height, so they must be accompanied by a subsequent call to this
@@ -2170,7 +2170,7 @@ gtk_cell_renderer_text_get_preferred_width (GtkCellRenderer *cell,
   if (priv->max_width_chars > 0)
     {
       gint max_width = xpad * 2 + PANGO_PIXELS (char_width) * priv->max_width_chars;
-      
+
       min_width = MIN (min_width, max_width);
       nat_width = MIN (nat_width, max_width);
     }
@@ -2245,7 +2245,7 @@ gtk_cell_renderer_text_get_aligned_area (GtkCellRenderer       *cell,
   gint y_offset = 0;
 
   layout = get_layout (celltext, widget, cell_area, flags);
-  get_size (cell, widget, cell_area, layout, &x_offset, &y_offset, 
+  get_size (cell, widget, cell_area, layout, &x_offset, &y_offset,
 	    &aligned_area->width, &aligned_area->height);
 
   aligned_area->x = cell_area->x + x_offset;
