@@ -1,0 +1,21 @@
+====================================================================================================
+TEK-001
+====================================================================================================
+Launching a GtkColorChooserDialog box from within the
+
+static  gboolean
+gtk_erg_cell_renderer_color_chooser_activate(
+    GtkCellRenderer         *   crdr            ,
+    GdkEvent                *   event           ,
+    GtkWidget               *   widget          ,
+    const gchar             *   path            ,
+    const GdkRectangle      *   background_area ,
+    const GdkRectangle      *   cell_area       ,
+    GtkCellRendererState        flags           )
+
+method make the 'path' parameter change - more precisely when a color is selected ; 'path' has
+to be some internal GTK var.
+====================================================================================================
+TEK-002
+====================================================================================================
+Guideline : Store the NULL value when set_property, and deal with it at render() time
