@@ -6,9 +6,4 @@
 	<File name="src/crcc-bpl.ci" uid="018049026000916" />
 	<File name="src/crcc-edit.ci" uid="018049026000916" />
 	<File name="src/crcc-get.ci" uid="018049026000916" />
-	<File name="src/crcc-set.ci" uid="018049026000916" />
-	<File name="src/gtkcelleditable__v-3.24.5.c" uid="018049026000916" />
-	<File name="src/gtkcelleditable__v-3.24.5.h" uid="018049026000916" />
-	<File name="src/gtkcellrenderertext__v-3.24.5.c" uid="018049026000916" />
-	<File name="src/gtkcellrenderertext__v-3.24.5.h" uid="018049026000916" />
 </CodeBlocks_project_oflp_file>

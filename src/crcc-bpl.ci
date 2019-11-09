@@ -1,5 +1,5 @@
 static void
-gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *crcc)
+gtk_erg_cell_renderer_color_chooser_init(GtkErgCellRendererColorChooser *crcc)
 {
     GtkErgCellRendererColorChooserPrivate   *   priv;
     GtkCellRenderer                         *   cell = GTK_CELL_RENDERER (crcc);
@@ -22,10 +22,12 @@ gtk_erg_cell_renderer_color_chooser_init (GtkErgCellRendererColorChooser *crcc)
 
     gtk_cell_renderer_set_alignment (cell, 0.0, 0.5);
     gtk_cell_renderer_set_padding   (cell, 2, 2);
+
+    //gtk_widget_add_events( GTK_WIDGET(crcc), GDK_KEY_PRESS_MASK);
 }
 
 static void
-gtk_erg_cell_renderer_color_chooser_finalize (GObject *object)
+gtk_erg_cell_renderer_color_chooser_finalize(GObject *object)
 {
     GtkErgCellRendererColorChooser          *   crcc    = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER(object);
     GtkErgCellRendererColorChooserPrivate   *   priv    = crcc->priv;
@@ -49,14 +51,14 @@ gtk_erg_cell_renderer_color_chooser_finalize (GObject *object)
  * Returns: the new cell renderer
  **/
 GtkCellRenderer *
-gtk_erg_cell_renderer_color_chooser_new (void)
+gtk_erg_cell_renderer_color_chooser_new(void)
 {
     printf("(crcc)new\n");
     return g_object_new (GTK_TYPE_ERG_CELL_RENDERER_COLOR_CHOOSER, NULL);
 }
 
 static void
-gtk_erg_cell_renderer_color_chooser_class_init (GtkErgCellRendererColorChooserClass *class)
+gtk_erg_cell_renderer_color_chooser_class_init(GtkErgCellRendererColorChooserClass *class)
 {
     GObjectClass            *   object_class    =   G_OBJECT_CLASS          (class);
     GtkCellRendererClass    *   cell_class      =   GTK_CELL_RENDERER_CLASS (class);

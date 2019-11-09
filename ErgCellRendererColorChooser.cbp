@@ -5,7 +5,7 @@
 		<Option title="ErgCellRendererColorChooser" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="src/;v-3.24.5/;doc/;" />
+		<Option virtualFolders="samples/gnucash/;samples/;samples/v-3.24.5/;src/;doc/;" />
 		<Build>
 			<Target title="D">
 				<Option output="bin/D/ErgCellRendererColorChooser" prefix_auto="1" extension_auto="1" />
@@ -60,29 +60,42 @@
 		<Unit filename="src/crcc-edit.ci">
 			<Option virtualFolder="src/" />
 		</Unit>
+		<Unit filename="src/crcc-fonts.ci">
+			<Option virtualFolder="src/" />
+		</Unit>
 		<Unit filename="src/crcc-get.ci">
 			<Option virtualFolder="src/" />
 		</Unit>
 		<Unit filename="src/crcc-set.ci">
-			<Option virtualFolder="v-3.24.5/" />
+			<Option virtualFolder="src/" />
 		</Unit>
-		<Unit filename="src/gtkcelleditable__v-3.24.5.c">
+		<Unit filename="src/samples/gnc-cell-renderer-popup-entry.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option virtualFolder="v-3.24.5/" />
+			<Option virtualFolder="samples/gnucash/" />
 		</Unit>
-		<Unit filename="src/gtkcelleditable__v-3.24.5.h">
-			<Option virtualFolder="v-3.24.5/" />
+		<Unit filename="src/samples/gnc-cell-renderer-popup-entry.h">
+			<Option virtualFolder="samples/gnucash/" />
 		</Unit>
-		<Unit filename="src/gtkcellrenderertext__v-3.24.5.c">
+		<Unit filename="src/samples/gnc-cell-renderer-popup.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option virtualFolder="v-3.24.5/" />
+			<Option virtualFolder="samples/gnucash/" />
 		</Unit>
-		<Unit filename="src/gtkcellrenderertext__v-3.24.5.h">
-			<Option virtualFolder="v-3.24.5/" />
+		<Unit filename="src/samples/gnc-cell-renderer-popup.h">
+			<Option virtualFolder="samples/gnucash/" />
+		</Unit>
+		<Unit filename="src/samples/gtkcelleditable__v-3.24.5.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="samples/v-3.24.5/" />
+		</Unit>
+		<Unit filename="src/samples/gtkcelleditable__v-3.24.5.h">
+			<Option virtualFolder="samples/v-3.24.5/" />
+		</Unit>
+		<Unit filename="src/samples/gtkcellrenderertext__v-3.24.5.c">
+			<Option compilerVar="CC" />
+			<Option virtualFolder="samples/v-3.24.5/" />
+		</Unit>
+		<Unit filename="src/samples/gtkcellrenderertext__v-3.24.5.h">
+			<Option virtualFolder="samples/v-3.24.5/" />
 		</Unit>
 		<Extensions>
 			<envvars />

@@ -3,7 +3,7 @@ obj
 *.~
 *.[oa]
 tests
-src/bkp
 doc
+README.md
 
 
