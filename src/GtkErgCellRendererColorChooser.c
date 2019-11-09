@@ -201,10 +201,15 @@ enum
     //  set by app
     PROP_EDITABLE               ,
     PROP_ACTIVATABLE            ,
+    //PROP_ACTIVE                 ,
     //  ............................................................................................
     PROP_COLOR_RGBA             ,
     PROP_COLOR_RGBA_TEXT        ,   // flagged by gtk_tree_view_column_new_with_attributes(... ) to be set by GtkTreeView before call to render()
     //  ............................................................................................
+    //PROP_STYLE_RECTANGLE        ,
+    //PROP_STYLE_ROUNDED_RECTANGLE,
+    //PROP_STYLE_DISK             ,
+    //PROP_STYLE_ELLISPE          ,
     PROP_EDITABLE_SET           ,
     PROP_ACTIVATABLE_SET        ,
     PROP_COLOR_RGBA_SET         ,
@@ -322,45 +327,57 @@ gtk_erg_cell_renderer_color_chooser_render (GtkCellRenderer      *cell,
 {
     GtkErgCellRendererColorChooser          *   celltext    =   GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
     GtkErgCellRendererColorChooserPrivate   *   priv        =   celltext->priv;
-    GtkStyleContext                         *   context;
     GdkRectangle                                r1;
+    GdkRectangle                                r2;
     //  ............................................................................................
     //printf("(crcc)render [%p]\n", cell);
     //printf("(crcc)render bg area[%i x %i]\n", background_area->width, background_area->height);
     //printf("(crcc)render cl area[%i x %i]\n", cell_area->width, cell_area->height);
-
-    //layout = get_layout (celltext, widget, cell_area, flags);
-    //get_size (cell, widget, cell_area, layout, &x_offset, &y_offset, NULL, NULL);
-    context = gtk_widget_get_style_context (widget);
-
-  //if (priv->background_set && (flags & GTK_CELL_RENDERER_SELECTED) == 0)
-    //{
 
     r1 = *cell_area;
 
     if ( r1.width > 35 )
         r1.width = 35;
 
-    gdk_cairo_set_source_rgba   (cr, &priv->a_prop_color_rgba);
-    gdk_cairo_rectangle         (cr, &r1);
-    cairo_fill                  (cr);
+    // homothetic
+    double  h               =   0.65;
+    double  hx              =   r1.width    * h;
+    double  hy              =   r1.height   * h;
 
-    //gtk_cell_renderer_get_padding (cell, &xpad, &ypad);
+    r2.x                    =   r1.x + ( r1.width  - hx ) / 2;
+    r2.y                    =   r1.y + ( r1.height - hy ) / 2;
+    r2.width                =   hx;
+    r2.height               =   hy;
 
+    double  x               = r2.x;
+    double  y               = r2.y;
+    double  width           = r2.width;
+    double  height          = r2.height;
 
-    //cairo_save (cr);
+    double  aspect          =   1.0;                /* aspect ratio */
+    double  corner_radius   =   height / 5.0;      /* and corner curvature radius */
 
-    //gdk_cairo_rectangle (cr, cell_area);
-    //cairo_clip (cr);
+    double  radius          =   corner_radius / aspect;
+    double  degrees         =   3.1415926 / 180.0;
 
-    //gtk_render_layout (context, cr,
-    //                   cell_area->x + x_offset + xpad,
-    //                   cell_area->y + y_offset + ypad,
-    //                   layout);
+    cairo_new_sub_path (cr);
+    cairo_arc( cr, x + width - radius   , y + radius            , radius, -90 * degrees ,   0 * degrees );
+    cairo_arc( cr, x + width - radius   , y + height - radius   , radius,   0 * degrees ,  90 * degrees );
+    cairo_arc( cr, x + radius           , y + height - radius   , radius,  90 * degrees , 180 * degrees );
+    cairo_arc( cr, x + radius           , y + radius            , radius, 180 * degrees , 270 * degrees );
+    cairo_close_path (cr);
 
-    //cairo_restore (cr);
+    cairo_set_source_rgb(cr, priv->a_prop_color_rgba.red, priv->a_prop_color_rgba.green, priv->a_prop_color_rgba.blue);
+    cairo_fill_preserve(cr);
 
-    //g_object_unref (layout);
+    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+    cairo_set_line_width(cr, 0.5);
+    cairo_stroke (cr);
+
+    //  simple rectangle
+    //gdk_cairo_set_source_rgba   (cr, &priv->a_prop_color_rgba);
+    //gdk_cairo_rectangle         (cr, &r2);
+    //cairo_fill                  (cr);
 }
 //  ************************************************************************************************
 //  EDITING
@@ -384,8 +401,8 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_width (GtkCellRenderer *cell,
     celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
     priv = celltext->priv;
 
-    *( minimum_size )   = 40;
-    *( natural_size )   = 40;
+    *( minimum_size )   = 35;
+    *( natural_size )   = 35;
 }
 
 static void
@@ -401,8 +418,8 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_height_for_width (GtkCellRende
 
   celltext = GTK_ERG_CELL_RENDERER_COLOR_CHOOSER (cell);
 
-    *( minimum_height )   = 15;
-    *( natural_height )   = 15;
+    *( minimum_height )   = (gint)( (double)width / (double)1.75 );
+    *( natural_height )   = (gint)( (double)width / (double)1.75 );
 }
 
 static void
@@ -425,8 +442,8 @@ gtk_erg_cell_renderer_color_chooser_get_preferred_height (GtkCellRenderer *cell,
   //gtk_cell_renderer_get_preferred_width (cell, widget, &min_width, NULL);
   //gtk_erg_cell_renderer_color_chooser_get_preferred_height_for_width (cell, widget, min_width,
   //                                                       minimum_size, natural_size);
-    *( minimum_size )   = 15;
-    *( natural_size )   = 15;
+    *( minimum_size )   = 20;
+    *( natural_size )   = 20;
 }
 
 static void

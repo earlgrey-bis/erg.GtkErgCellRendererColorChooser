@@ -29,6 +29,9 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     break;
     //  ............................................................................................
     case PROP_ACTIVATABLE:
+
+    // printf("Set:ACTIVATABLE\n");
+
     priv->a_prop_activatable        =   g_value_get_boolean (value);
     priv->a_prop_activatable_set    =   TRUE;
 
