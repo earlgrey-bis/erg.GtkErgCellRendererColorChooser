@@ -10,6 +10,7 @@ gtk_erg_cell_renderer_color_chooser_init(GtkErgCellRendererColorChooser *crcc)
 
     priv->a_prop_editable           =   FALSE;
     priv->a_prop_activatable        =   FALSE;
+    priv->a_prop_active             =   FALSE;
     priv->d_prop_color_rgba_text    =   NULL;
     priv->a_prop_color_rgba.red     =   0.8;
     priv->a_prop_color_rgba.green   =   0.6;
@@ -86,8 +87,15 @@ gtk_erg_cell_renderer_color_chooser_class_init(GtkErgCellRendererColorChooserCla
 
   Crcc_props[PROP_ACTIVATABLE] =
       g_param_spec_boolean( "activatable",
-                            P_("Aditable"),
+                            P_("Activatable"),
                             P_("Whether the widget can be activated"),
+                            FALSE,
+                            GTK_PARAM_READWRITE);
+
+  Crcc_props[PROP_ACTIVE] =
+      g_param_spec_boolean( "active",
+                            P_("Active"),
+                            P_("Whether the widget displays the color dialog"),
                             FALSE,
                             GTK_PARAM_READWRITE);
 
@@ -117,6 +125,10 @@ gtk_erg_cell_renderer_color_chooser_class_init(GtkErgCellRendererColorChooserCla
     ADD_SET_PROP ("activatable-set"     , PROP_ACTIVATABLE_SET      ,
         P_("Activatability set")                                    ,
         P_("Whether this tag affects activatability")               );
+
+    ADD_SET_PROP ("active-set"          , PROP_ACTIVE_SET           ,
+        P_("Activity set")                                          ,
+        P_("Whether this tag affects activity")                     );
 
     ADD_SET_PROP ("color-rgba-set"      , PROP_COLOR_RGBA_SET       ,
         P_("Color as GdkRGBA set")                                  ,

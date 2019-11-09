@@ -44,7 +44,10 @@
 		<Linker>
 			<Add option="`pkg-config --libs gtk+-3.0`" />
 		</Linker>
-		<Unit filename="doc/tek.txt">
+		<Unit filename="branches/docs/README.md">
+			<Option virtualFolder="doc/" />
+		</Unit>
+		<Unit filename="branches/docs/tek.txt">
 			<Option virtualFolder="doc/" />
 		</Unit>
 		<Unit filename="src/GtkErgCellRendererColorChooser.c">
@@ -71,6 +74,8 @@
 		</Unit>
 		<Unit filename="src/samples/gnc-cell-renderer-popup-entry.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 			<Option virtualFolder="samples/gnucash/" />
 		</Unit>
 		<Unit filename="src/samples/gnc-cell-renderer-popup-entry.h">
@@ -78,6 +83,8 @@
 		</Unit>
 		<Unit filename="src/samples/gnc-cell-renderer-popup.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 			<Option virtualFolder="samples/gnucash/" />
 		</Unit>
 		<Unit filename="src/samples/gnc-cell-renderer-popup.h">
@@ -85,6 +92,8 @@
 		</Unit>
 		<Unit filename="src/samples/gtkcelleditable__v-3.24.5.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 			<Option virtualFolder="samples/v-3.24.5/" />
 		</Unit>
 		<Unit filename="src/samples/gtkcelleditable__v-3.24.5.h">
@@ -92,6 +101,8 @@
 		</Unit>
 		<Unit filename="src/samples/gtkcellrenderertext__v-3.24.5.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 			<Option virtualFolder="samples/v-3.24.5/" />
 		</Unit>
 		<Unit filename="src/samples/gtkcellrenderertext__v-3.24.5.h">

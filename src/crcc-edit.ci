@@ -156,6 +156,9 @@ gtk_erg_cell_renderer_color_chooser_activate(
     crcc    =   GTK_ERG_CELL_RENDERER_COLOR_CHOOSER(crdr);
     priv    =   crcc->priv;
 
+    if ( ! priv->a_prop_active )
+        return TRUE;
+
     spath   =   g_strdup(path);                                                                     // TEK-001
 
     GtkWidget * dlg = gtk_color_chooser_dialog_new(

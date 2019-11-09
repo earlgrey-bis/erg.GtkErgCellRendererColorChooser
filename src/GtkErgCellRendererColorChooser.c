@@ -201,7 +201,7 @@ enum
     //  set by app
     PROP_EDITABLE               ,
     PROP_ACTIVATABLE            ,
-    //PROP_ACTIVE                 ,
+    PROP_ACTIVE                 ,
     //  ............................................................................................
     PROP_COLOR_RGBA             ,
     PROP_COLOR_RGBA_TEXT        ,   // flagged by gtk_tree_view_column_new_with_attributes(... ) to be set by GtkTreeView before call to render()
@@ -212,6 +212,7 @@ enum
     //PROP_STYLE_ELLISPE          ,
     PROP_EDITABLE_SET           ,
     PROP_ACTIVATABLE_SET        ,
+    PROP_ACTIVE_SET             ,
     PROP_COLOR_RGBA_SET         ,
     PROP_COLOR_RGBA_TEXT_SET    ,
 
@@ -232,9 +233,11 @@ struct _GtkErgCellRendererColorChooserPrivate
 
     guint                   a_prop_editable             :   1;
     guint                   a_prop_activatable          :   1;
+    guint                   a_prop_active               :   1;
 
     guint                   a_prop_editable_set         :   1;
     guint                   a_prop_activatable_set      :   1;
+    guint                   a_prop_active_set           :   1;
     guint                   a_prop_color_rgba_set       :   1;
     guint                   a_prop_color_rgba_text_set  :   1;
 };

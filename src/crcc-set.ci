@@ -48,14 +48,35 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     g_object_notify_by_pspec (object, Crcc_props[PROP_ACTIVATABLE_SET]);
     break;
     //  ............................................................................................
+    case PROP_ACTIVE:
+
+    // printf("Set:ACTIVE\n");
+
+    priv->a_prop_active         =   g_value_get_boolean (value);
+    priv->a_prop_active_set     =   TRUE;
+
+    g_object_notify_by_pspec (object, Crcc_props[PROP_ACTIVE_SET]);
+    break;
+    //  ............................................................................................
     case PROP_COLOR_RGBA:
     priv->a_prop_color_rgba_set         = TRUE;
     priv->a_prop_color_rgba_text_set    = TRUE;
 
-    priv->a_prop_color_rgba = *( (GdkRGBA*)g_value_get_boxed(value) );                              // struct copy
-
     if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
-    priv->d_prop_color_rgba_text = gdk_rgba_to_string(&priv->a_prop_color_rgba);
+
+    if ( g_value_get_boxed(value) )
+    {
+        priv->a_prop_color_rgba         =   *( (GdkRGBA*)g_value_get_boxed(value) );                // struct copy
+        priv->d_prop_color_rgba_text    =   gdk_rgba_to_string_sharp6d(&priv->a_prop_color_rgba);
+    }
+    else
+    {
+        priv->d_prop_color_rgba_text    =   NULL;
+        priv->a_prop_color_rgba.red     =   0.85;
+        priv->a_prop_color_rgba.green   =   0.85;
+        priv->a_prop_color_rgba.blue    =   0.85;
+        priv->a_prop_color_rgba.alpha   =   0.50;
+    }
 
     g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_SET]);
     g_object_notify_by_pspec (object, Crcc_props[PROP_COLOR_RGBA_TEXT_SET]);
@@ -91,14 +112,15 @@ gtk_erg_cell_renderer_color_chooser_set_property (
     priv->a_prop_color_rgba_text_set    = TRUE;
 
     if ( priv->d_prop_color_rgba_text ) g_free (priv->d_prop_color_rgba_text);
-    priv->d_prop_color_rgba_text = g_value_dup_string (value);
 
     if ( g_value_get_string(value) )                                                                // ex:empty GtkTreeModel
     {
+        priv->d_prop_color_rgba_text = g_value_dup_string (value);
         gdk_rgba_parse(&priv->a_prop_color_rgba, priv->d_prop_color_rgba_text);
     }
     else
     {
+        priv->d_prop_color_rgba_text    =   NULL;
         priv->a_prop_color_rgba.red     =   0.85;
         priv->a_prop_color_rgba.green   =   0.85;
         priv->a_prop_color_rgba.blue    =   0.85;
